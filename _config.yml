@@ -9,7 +9,7 @@ compass:
   # author will appear under the avatar (optional)
   author: "M. Bilal"
   # tagline will appear under the title (optional)
-  tagline: "Country hopping Ph.D. Student"
+  tagline: "On a lifelong learning quest"
   # if include_content is true, the contents of the content.html include will be
   # added right above the generated item list, if present
   include_content: true
