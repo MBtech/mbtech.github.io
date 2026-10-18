@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en" data-style="90s">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muhammad Bilal</title>
+<meta name="description" content="AI research scientist and engineering leader. I help teams take AI from the demo to something people rely on.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mbtech.github.io/90s/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Muhammad Bilal">
+<meta property="og:description" content="AI research scientist and engineering leader. I help teams take AI from the demo to something people rely on.">
+<meta property="og:url" content="https://mbtech.github.io/90s/">
+<meta property="og:image" content="https://mbtech.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Muhammad Bilal">
+<meta name="twitter:description" content="AI research scientist and engineering leader. I help teams take AI from the demo to something people rely on.">
+<meta name="twitter:image" content="https://mbtech.github.io/assets/og.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/avatar/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/avatar/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/common.css">
+<link rel="stylesheet" href="/assets/styles/90s/style.css">
+<script src="/data/site.js"></script>
+<script src="/assets/js/common.js"></script>
+</head>
+<body>
+
+<div id="desk">
+  <nav class="icons" id="icons" aria-label="Desktop"></nav>
+
+  <!-- About me -->
+  <section class="win" id="w-about" data-app="about" data-title="About me" aria-labelledby="t-about" hidden>
+    <div class="tbar"><img src="/assets/avatar/color.png" alt=""><h2 id="t-about">About me</h2></div>
+    <div class="wbody">
+      <div class="tabs" role="tablist" aria-label="About me">
+        <button role="tab" aria-selected="true" aria-controls="tab-general" id="tb-general">General</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-now" id="tb-now" tabindex="-1">Now</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-stats" id="tb-stats" tabindex="-1">Stats</button>
+      </div>
+      <div class="tabpanel" role="tabpanel" id="tab-general" aria-labelledby="tb-general">
+        <div class="who">
+          <img class="ava" id="ava" src="/assets/avatar/color.png" width="40" height="40" alt="Pixel-art portrait of Muhammad Bilal" title="Click to change colours">
+          <div id="whoText"></div>
+        </div>
+      </div>
+      <div class="tabpanel" role="tabpanel" id="tab-now" aria-labelledby="tb-now" hidden><dl class="props" id="nowList"></dl></div>
+      <div class="tabpanel" role="tabpanel" id="tab-stats" aria-labelledby="tb-stats" hidden><dl class="props" id="statsList"></dl></div>
+    </div>
+    <div class="status"><span id="aboutStatus"></span><span class="fit">Press <b>`</b> for a terminal</span></div>
+  </section>
+
+  <!-- What I do -->
+  <section class="win hire" id="w-work" data-app="work" data-title="What I do" aria-labelledby="t-work" hidden>
+    <div class="tbar"><h2 id="t-work">What I do</h2></div>
+    <div class="wbody">
+      <p style="margin:0 0 10px" id="workIntro"></p>
+      <ul class="svc" id="svcList"></ul>
+      <p class="section-h">Two ways to work with me</p>
+      <div class="choices" id="choices"></div>
+    </div>
+    <div class="status"><span>Fractional AI leader</span><span class="fit">Just me, or a wider team</span></div>
+  </section>
+
+  <!-- My journey -->
+  <section class="win" id="w-journey" data-app="journey" data-title="My journey" aria-labelledby="t-journey" hidden>
+    <div class="tbar"><h2 id="t-journey">My journey</h2></div>
+    <div class="wbody">
+      <div class="scrub">
+        <button class="btn" id="replay" type="button">Replay</button>
+        <input type="range" id="year" min="2008" step="1" aria-label="Year">
+        <output id="yearOut" for="year"></output>
+      </div>
+      <div class="tl" id="tl"></div>
+      <div class="detail" id="detail" aria-live="polite"><span class="muted">Click a row to see what happened there.</span></div>
+    </div>
+    <div class="status"><span id="then"></span></div>
+  </section>
+
+  <!-- Papers -->
+  <section class="win" id="w-papers" data-app="papers" data-title="Papers" aria-labelledby="t-papers" hidden>
+    <div class="tbar"><h2 id="t-papers">Papers</h2></div>
+    <div class="wbody">
+      <div class="tools">
+        <input type="search" id="q" placeholder="Search titles, venues, authors" aria-label="Search papers">
+        <label><input type="checkbox" id="all"> Show older papers</label>
+      </div>
+      <div class="list">
+        <table class="files">
+          <thead><tr>
+            <th scope="col"><button data-s="year" aria-sort="descending">Year</button></th>
+            <th scope="col" class="venue"><button data-s="venue">Venue</button></th>
+            <th scope="col"><button data-s="title">Title</button></th>
+            <th scope="col"><button data-s="cites">Cites</button></th>
+          </tr></thead>
+          <tbody id="files"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="status"><span id="pcount"></span><span class="fit" id="pscholar"></span></div>
+  </section>
+
+  <!-- Reading list -->
+  <section class="win" id="w-reading" data-app="reading" data-title="Reading list" aria-labelledby="t-reading" hidden>
+    <div class="tbar"><h2 id="t-reading">Reading list</h2></div>
+    <div class="wbody" id="readingBody"></div>
+  </section>
+
+  <!-- Links -->
+  <section class="win" id="w-links" data-app="links" data-title="Links" aria-labelledby="t-links" hidden>
+    <div class="tbar"><h2 id="t-links">Links</h2></div>
+    <div class="wbody"><ul class="linklist" id="linkList"></ul></div>
+  </section>
+
+  <!-- Display properties: style + wallpaper -->
+  <section class="win" id="w-display" data-title="Display Properties" aria-labelledby="t-display" hidden>
+    <div class="tbar"><h2 id="t-display">Display Properties</h2></div>
+    <div class="wbody">
+      <fieldset class="grp"><legend>Style</legend>
+        <div class="styles" id="styleCards" role="radiogroup" aria-label="Style"></div>
+        <p class="muted" style="margin:0;font-size:.8125rem">The same site in three looks. Your choice is remembered.</p>
+      </fieldset>
+      <fieldset class="grp"><legend>Wallpaper</legend>
+        <div class="walls" id="wallPick"></div>
+      </fieldset>
+      <div class="dlg-btns"><button class="btn primary" id="dispOk" type="button">OK</button><button class="btn" id="dispCancel" type="button">Cancel</button></div>
+    </div>
+  </section>
+
+  <!-- Terminal -->
+  <section class="win" id="w-term" data-app="terminal" data-title="Terminal" aria-labelledby="t-term" hidden>
+    <div class="tbar"><h2 id="t-term">Terminal</h2></div>
+    <div class="wbody">
+      <div class="term" id="term">
+        <div class="out" id="tout" aria-live="polite"></div>
+        <form id="tform" autocomplete="off">
+          <label for="tin">guest@bilal:~$</label>
+          <input id="tin" type="text" spellcheck="false" autocapitalize="off" aria-label="Terminal. Type help and press Enter.">
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <span class="hint" id="hint">Right-click the desk to change the style or wallpaper.</span>
+</div>
+
+<div class="ctx" id="ctx" hidden role="menu" aria-label="Desktop">
+  <ul>
+    <li class="head">Style</li>
+    <li><button role="menuitemradio" class="sub" data-style="modern"><span class="chk"></span>Modern</button></li>
+    <li><button role="menuitemradio" class="sub" data-style="2000s"><span class="chk"></span>2000s</button></li>
+    <li><button role="menuitemradio" class="sub" data-style="90s"><span class="chk"></span>90s</button></li>
+    <li><hr></li>
+    <li class="head">Wallpaper</li>
+    <li><button role="menuitemradio" class="sub" data-wall="dither"><span class="chk"></span>Teal dither</button></li>
+    <li><button role="menuitemradio" class="sub" data-wall="weave"><span class="chk"></span>Woven</button></li>
+    <li><button role="menuitemradio" class="sub" data-wall="bricks"><span class="chk"></span>Tiles</button></li>
+    <li><button role="menuitemradio" class="sub" data-wall="plain"><span class="chk"></span>Plain</button></li>
+    <li><hr></li>
+    <li><button role="menuitem" data-act="arrange-name"><span class="chk"></span>Arrange icons by name</button></li>
+    <li><button role="menuitem" data-act="arrange-type"><span class="chk"></span>Arrange icons by type</button></li>
+    <li><hr></li>
+    <li><button role="menuitem" data-act="term"><span class="chk"></span>Open Terminal</button></li>
+    <li><button role="menuitem" data-act="reset"><span class="chk"></span>Reset desktop</button></li>
+    <li><button role="menuitem" data-act="display"><span class="chk"></span>Properties</button></li>
+  </ul>
+</div>
+
+<div id="boot" hidden aria-hidden="true">
+  <div class="card">
+    <div class="inner"><img src="/assets/avatar/color.png" alt=""><div><h1 id="bootName"></h1><p>Starting up…</p></div></div>
+    <div class="prog" id="bootProg"></div>
+    <div class="msg"><span id="bootMsg">Loading your desktop</span><span>Click to skip</span></div>
+  </div>
+</div>
+<div id="saver" hidden aria-hidden="true"><canvas id="saverCv"></canvas><p>Move the mouse or press a key.</p></div>
+
+<div id="menu" hidden role="menu" aria-label="Programs">
+  <div class="side">bilal</div>
+  <ul id="menuList"></ul>
+</div>
+
+<div id="taskbar">
+  <button class="btn" id="menuBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="menu"><img src="/assets/avatar/color.png" alt="">Menu</button>
+  <div class="tasks" id="tasks" aria-label="Open windows"></div>
+  <div class="tray"><button class="btn termbtn" id="termBtn" title="Terminal (press `)" aria-label="Open terminal">&gt;_</button><span id="clock"></span></div>
+</div>
+
+<script src="/assets/styles/90s/app.js"></script>
+</body>
+</html>

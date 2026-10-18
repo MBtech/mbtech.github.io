@@ -1,27 +1,218 @@
----
-layout: base
----
-<div class="wrapper">
-    <header>
-        {% if site.compass.logo %}
-        <div class="logo-container">
-          <a class="logo" href="{{ page.baseurl }}" style="background-image: url('{{ site.baseurl }}{{ site.compass.logo }}')"></a>
-        </div>
-        {% endif %}
+<!doctype html>
+<html lang="en" data-style="modern">
+<head>
+<script>
+  // Send returning visitors to the style they used last. ?style=modern keeps this one.
+  try {
+    var s = localStorage.getItem('style'), q = location.search;
+    if ((s === '2000s' || s === '90s') && !/[?&]style=modern(&|$)/.test(q)) location.replace('/' + s + '/' + q);
+  } catch (e) {}
+  // Apply a saved appearance before first paint, so there is no flash.
+  try { var t = localStorage.getItem('mb.modern.theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Muhammad Bilal</title>
+<meta name="description" content="AI research scientist and engineering leader. I help teams take AI from the demo to something people rely on.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mbtech.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mbtech.github.io/">
+<meta property="og:title" content="Muhammad Bilal">
+<meta property="og:description" content="AI research scientist and engineering leader. I help teams take AI from the demo to something people rely on.">
+<meta property="og:image" content="https://mbtech.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Muhammad Bilal">
+<meta name="twitter:description" content="AI research scientist and engineering leader. I help teams take AI from the demo to something people rely on.">
+<meta name="twitter:image" content="https://mbtech.github.io/assets/og.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/avatar/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/avatar/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/common.css">
+<link rel="stylesheet" href="/assets/styles/modern/style.css">
+</head>
+<body>
+<noscript><p style="position:relative;z-index:99999;margin:60px 24px;padding:16px;background:#fff;color:#111;border-radius:12px">This site is an interactive desktop and needs JavaScript. You can still find my papers on <a href="https://scholar.google.com/citations?user=HlNg0VwAAAAJ">Google Scholar</a> and my code on <a href="https://github.com/MBtech">GitHub</a>.</p></noscript>
+<div id="wall" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
-        {% if site.compass.author %}
-        <div class="author-container"><h1>{{ site.compass.author }}</h1></div>
-        {% endif %}
+<header id="menubar">
+  <button class="mb brand" data-menu="m-bilal" aria-haspopup="menu" aria-expanded="false"><img src="/assets/avatar/color.png" alt=""><b id="brandName"></b></button>
+  <button class="mb menuitem" data-menu="m-go" aria-haspopup="menu" aria-expanded="false">Go</button>
+  <button class="mb menuitem" data-menu="m-view" aria-haspopup="menu" aria-expanded="false">View</button>
+  <button class="mb menuitem" data-menu="m-style" aria-haspopup="menu" aria-expanded="false">Style</button>
+  <span class="mb-spacer"></span>
+  <button class="mb search" id="searchBtn" aria-label="Search everything"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4" stroke-linecap="round"/></svg><span>Search</span><kbd class="kb" id="kbHint">⌘K</kbd></button>
+  <button class="mb theme" id="themeBtn" aria-label="Switch appearance"></button>
+  <span id="clock"></span>
+</header>
 
-        {% if site.compass.tagline %}
-        <div class="tagline-container"><p>{{ site.compass.tagline }}</p></div>
-        {% endif %}
-    </header>
-    <main>
-      {% if site.compass.include_content %}
-      <div class="content">
-        {% include content.html %}
-      </div>
-      {% endif %}
-    </main>
+<div class="menu" id="m-bilal" role="menu" aria-label="Bilal" hidden>
+  <button role="menuitem" data-act="open:w-about"><span class="chk"></span>About me</button>
+  <button role="menuitem" data-act="open:w-work"><span class="chk"></span>Work with me</button>
+  <hr>
+  <div class="head">Style</div>
+  <button role="menuitem" data-act="style:2000s"><span class="chk"></span>Switch to the 2000s look</button>
+  <button role="menuitem" data-act="style:90s"><span class="chk"></span>Switch to the 90s look</button>
+  <hr>
+  <button role="menuitem" data-act="term"><span class="chk"></span>Terminal</button>
+  <button role="menuitem" data-act="reset"><span class="chk"></span>Reset desktop</button>
 </div>
+<div class="menu" id="m-go" role="menu" aria-label="Go" hidden></div>
+<div class="menu" id="m-view" role="menu" aria-label="View" hidden>
+  <div class="head">Appearance</div>
+  <button role="menuitemradio" data-act="theme:auto"><span class="chk"></span>Match my system</button>
+  <button role="menuitemradio" data-act="theme:light"><span class="chk"></span>Light</button>
+  <button role="menuitemradio" data-act="theme:dark"><span class="chk"></span>Dark</button>
+  <hr>
+  <div class="head">Wallpaper</div>
+  <button role="menuitemradio" data-act="wall:aurora"><span class="chk"></span>Daylight</button>
+  <button role="menuitemradio" data-act="wall:dusk"><span class="chk"></span>Dusk</button>
+  <button role="menuitemradio" data-act="wall:plain"><span class="chk"></span>Plain</button>
+</div>
+<div class="menu" id="m-style" role="menu" aria-label="Style" hidden>
+  <div class="head">Pick a look. Your windows come with you.</div>
+  <button role="menuitemradio" data-act="style:modern" aria-checked="true"><span class="chk">•</span>Modern<span class="hint">this one</span></button>
+  <button role="menuitemradio" data-act="style:2000s" aria-checked="false"><span class="chk"></span>2000s<span class="hint">blue taskbar</span></button>
+  <button role="menuitemradio" data-act="style:90s" aria-checked="false"><span class="chk"></span>90s<span class="hint">grey windows</span></button>
+</div>
+
+<main id="desk">
+  <h1 class="sr" id="srTitle"></h1>
+
+  <aside id="widgets" aria-label="Widgets">
+    <section class="widget glass w-clock" aria-label="Clock">
+      <div class="time" id="wTime">--:--</div>
+      <div class="date" id="wDate"></div>
+    </section>
+    <section class="widget glass w-now" aria-labelledby="wn-h">
+      <h3 id="wn-h">Now</h3>
+      <ul id="wNowList"></ul>
+    </section>
+    <button class="widget glass w-jour" data-open="w-journey" aria-label="My journey. Open the timeline.">
+      <h3>My journey</h3>
+      <div class="jy" id="jYear" aria-hidden="true"></div>
+      <svg class="jmini" id="jMini" viewBox="0 0 236 66" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="jnow" id="jNow" aria-hidden="true"></div>
+    </button>
+    <button class="widget glass w-cite" id="wCite" data-open="w-papers">
+      <h3>Citations on Google Scholar</h3>
+      <div class="big" id="wCiteN"></div>
+      <div class="row"><span><b id="wH"></b>h-index</span><span><b id="wP"></b>papers</span></div>
+    </button>
+  </aside>
+
+  <ul id="apps" aria-label="Apps"></ul>
+
+  <!-- About me -->
+  <section class="win glass" id="w-about" data-title="About me" data-icon="about" aria-labelledby="t-about" tabindex="-1">
+    <div class="tbar"><button class="back" aria-label="Back to home"></button><span class="tico"></span><h2 id="t-about">About me</h2></div>
+    <div class="wbody">
+      <div class="who">
+        <button class="ava" id="ava" title="Change my colours" aria-label="Change portrait colours"><img id="avaImg" src="/assets/avatar/color.png" width="40" height="40" alt=""></button>
+        <div>
+          <h1 id="aboutName"></h1>
+          <p class="lede" id="aboutLede"></p>
+        </div>
+      </div>
+      <div id="aboutBio"></div>
+      <ul class="nowlist" id="nowList" aria-label="What I'm doing now"></ul>
+    </div>
+  </section>
+
+  <!-- What I do -->
+  <section class="win glass work" id="w-work" data-title="What I do" data-icon="work" aria-labelledby="t-work" tabindex="-1">
+    <div class="tbar"><button class="back" aria-label="Back to home"></button><span class="tico"></span><h2 id="t-work">What I do</h2></div>
+    <div class="wbody">
+      <h3>Fractional AI leadership</h3>
+      <p class="intro" id="workIntro"></p>
+      <ul class="services" id="services"></ul>
+      <p class="ways-h">Two ways to work with me</p>
+      <div class="ways">
+        <div class="way solo" id="way-solo"><b id="soloT"></b><span id="soloX"></span><a class="pill" id="soloA" target="_blank" rel="noopener"></a></div>
+        <div class="way team" id="way-team"><b id="teamT"></b><span id="teamX"></span><a class="pill alt" id="teamA" target="_blank" rel="noopener"></a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- My journey -->
+  <section class="win glass" id="w-journey" data-title="My journey" data-icon="journey" aria-labelledby="t-journey" tabindex="-1" hidden>
+    <div class="tbar"><button class="back" aria-label="Back to home"></button><span class="tico"></span><h2 id="t-journey">My journey</h2></div>
+    <div class="wbody">
+      <div class="scrub">
+        <button class="btn" id="replay" type="button">Replay</button>
+        <input type="range" id="year" step="1" aria-label="Year">
+        <output id="yearOut" for="year"></output>
+      </div>
+      <div class="tl" id="tl"></div>
+      <div class="tlegend" aria-hidden="true"><span><i style="background:var(--t-ind)"></i>Industry</span><span><i style="background:var(--t-res)"></i>Research</span><span><i style="background:var(--t-edu)"></i>Education</span><span><i style="background:var(--good)"></i>Now</span></div>
+      <div class="detail" id="detail" aria-live="polite"><span class="muted">Drag through the years, or pick a row to see what happened there.</span></div>
+    </div>
+    <div class="wfoot"><span id="then"></span></div>
+  </section>
+
+  <!-- Papers -->
+  <section class="win glass" id="w-papers" data-title="Papers" data-icon="papers" aria-labelledby="t-papers" tabindex="-1" hidden>
+    <div class="tbar"><button class="back" aria-label="Back to home"></button><span class="tico"></span><h2 id="t-papers">Papers</h2></div>
+    <div class="wbody">
+      <div class="ptools">
+        <input type="search" id="q" placeholder="Search titles, venues and authors" aria-label="Search papers">
+        <select id="sort" aria-label="Sort papers"><option value="year">Newest first</option><option value="cites">Most cited</option></select>
+        <label><input type="checkbox" id="all"> Include older</label>
+      </div>
+      <ul class="plist" id="plist"></ul>
+    </div>
+    <div class="wfoot"><span id="pcount"></span><a id="scholarLink" target="_blank" rel="noopener">Google Scholar</a></div>
+  </section>
+
+  <!-- Reading list -->
+  <section class="win glass" id="w-reading" data-title="Reading list" data-icon="books" aria-labelledby="t-reading" tabindex="-1" hidden>
+    <div class="tbar"><button class="back" aria-label="Back to home"></button><span class="tico"></span><h2 id="t-reading">Reading list</h2></div>
+    <div class="wbody"><div id="rl"></div></div>
+  </section>
+
+  <!-- Links -->
+  <section class="win glass" id="w-links" data-title="Links" data-icon="links" aria-labelledby="t-links" tabindex="-1" hidden>
+    <div class="tbar"><button class="back" aria-label="Back to home"></button><span class="tico"></span><h2 id="t-links">Links</h2></div>
+    <div class="wbody"><ul class="links" id="linklist"></ul></div>
+  </section>
+
+  <!-- Terminal -->
+  <section class="win glass termwin" id="w-terminal" data-title="Terminal" data-icon="term" aria-labelledby="t-terminal" tabindex="-1" hidden>
+    <div class="tbar"><button class="back" aria-label="Back to home"></button><span class="tico"></span><h2 id="t-terminal">Terminal</h2></div>
+    <div class="wbody">
+      <div class="term" id="term">
+        <div class="out" id="tout" aria-live="polite"></div>
+        <form id="tform" autocomplete="off">
+          <label for="tin">guest@bilal:~$</label>
+          <input id="tin" type="text" spellcheck="false" autocapitalize="off" aria-label="Terminal. Type help and press Enter.">
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav id="dock" class="glass" aria-label="Dock"></nav>
+
+<div id="pal" hidden>
+  <div class="palbox glass" role="dialog" aria-modal="true" aria-label="Search everything">
+    <div class="palin">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4" stroke-linecap="round"/></svg>
+      <input id="palq" type="text" role="combobox" aria-expanded="true" aria-controls="palres" aria-autocomplete="list" placeholder="Search papers, books, windows and actions" spellcheck="false" autocomplete="off">
+    </div>
+    <ul class="palres" id="palres" role="listbox" aria-label="Results"></ul>
+    <div class="palfoot" aria-hidden="true"><span>↑ ↓ to move</span><span>Enter to open</span><span>Esc to close</span></div>
+  </div>
+</div>
+
+<div id="hello" hidden aria-hidden="true"><div class="hi"><img src="/assets/avatar/color.png" alt=""><p id="helloText"></p></div></div>
+<div id="toast" role="status" hidden></div>
+
+<script src="/data/site.js"></script>
+<script src="/assets/js/common.js"></script>
+<script src="/assets/styles/modern/app.js"></script>
+</body>
+</html>

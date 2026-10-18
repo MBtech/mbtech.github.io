@@ -1,21 +1,40 @@
-# Documentation
+# mbtech.github.io
 
-Compass is a Jekyll theme designed with something very specific in mind: to be a simple and elegant personal landing page that can be easily deployed to [GitHub Pages](https://pages.github.com/).
+Personal site of Muhammad Bilal: a desktop you can play with, in three styles.
 
-## How to use Compass
+| Style  | Page      | Code                      |
+|--------|-----------|---------------------------|
+| Modern | `/`       | `assets/styles/modern/`   |
+| 2000s  | `/2000s/` | `assets/styles/2000s/`    |
+| 90s    | `/90s/`   | `assets/styles/90s/`      |
 
-1. Start by [installing Bundler](http://bundler.io) `gem install bundler`
-2. [Fork the Compass repository](https://github.com/excentris/compass/fork)
-3. Clone the repository you just forked: `git clone https://github.com/YOUR-USER/compass`
-4. Then run `bundle install` to get [Jekyll](http://jekyllrb.com) and all the dependencies.
-5. Edit `_config.yml` as needed.
-6. Run the Jekyll server with `bundle exec jekyll serve`
-7. Go to `http://localhost:4000`
+Visitors switch styles from the menu in each style (or `style 90s` in the Terminal window).
+The site remembers the last style a visitor used, and `/` sends them back to it.
 
-## Deploy your site to GitHub Pages
+## Updating the content
 
-If you want to use Compass as your personal landing page you can deploy your site to GitHub Pages as a [User Page](https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages). To do so, when you are done modifying your clone, you should rename your repository to `username.github.io` where username is your username. When GitHub builds the page it will be made available at `https://username.github.io`.
+Everything the site says is in **`data/site.js`**: bio, current roles, services, timeline,
+papers, citation counts and the reading list. All three styles read from it, so edit it once.
 
-If you are planning on using a custom domain to direct to your site, modify the CNAME file as described [here](https://help.github.com/articles/adding-a-cname-file-to-your-repository/).
+- Add a paper: add an entry to `papers` (newest first). `older: true` hides it behind
+  "show older papers". `url` can be a link or a PDF in `papers/`.
+- Change a role: edit `roles`. Dates are decimal years (2021.5 is about July 2021);
+  `null` as the end date means it is still going.
+- Citations: update `scholar` and each paper's `cites` from Google Scholar.
 
-Check the [GitHub Pages Basics](https://help.github.com/categories/github-pages-basics/) for more information.
+## Links that open a window
+
+`/?open=papers,reading` opens those windows directly. Window ids: `about`, `work`, `journey`,
+`papers`, `reading`, `links`, `terminal`. The old `/reading` page redirects to the
+reading list.
+
+## Running it locally
+
+It is plain HTML, CSS and JavaScript, with no build step (`.nojekyll` turns off Jekyll on GitHub Pages).
+
+```sh
+python3 -m http.server 8000
+```
+
+Then open http://localhost:8000. Pages use absolute paths, so open them through a server,
+not as files.
