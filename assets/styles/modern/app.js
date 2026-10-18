@@ -33,7 +33,7 @@ const APP_ID = wid => wid.replace(/^w-/, '');
 const tile = (id, a, b, inner) => `<svg viewBox="0 0 60 60" aria-hidden="true"><defs><linearGradient id="g-${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="60" height="60" fill="url(#g-${id})"/>${inner}</svg>`;
 let iconSeq = 0;
 const ICONS = {
-  about: () => `<svg viewBox="0 0 60 60" aria-hidden="true"><defs><linearGradient id="ga${++iconSeq}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7C76C"/><stop offset="1" stop-color="#EE9A6E"/></linearGradient></defs><rect width="60" height="60" fill="url(#ga${iconSeq})"/><image href="/assets/avatar/color.png" x="8" y="8" width="44" height="44" style="image-rendering:pixelated"/></svg>`,
+  about: () => `<svg viewBox="0 0 60 60" aria-hidden="true"><defs><linearGradient id="ga${++iconSeq}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7C76C"/><stop offset="1" stop-color="#EE9A6E"/></linearGradient></defs><rect width="60" height="60" fill="url(#ga${iconSeq})"/><image href="/assets/avatar/avatar.webp" x="0" y="0" width="60" height="60"/></svg>`,
   work: () => tile('w' + (++iconSeq), '#3FBF8C', '#167A5A', '<rect x="13" y="22" width="34" height="24" rx="5" fill="#fff"/><path d="M24 22v-4a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v4" fill="none" stroke="#fff" stroke-width="3"/><rect x="13" y="30" width="34" height="3" fill="#167A5A" opacity=".35"/><rect x="27" y="28" width="6" height="7" rx="2" fill="#167A5A"/>'),
   journey: () => tile('j' + (++iconSeq), '#2C9AAE', '#155463', '<rect x="12" y="17" width="20" height="6" rx="3" fill="#fff"/><rect x="20" y="27" width="28" height="6" rx="3" fill="#FFD27A"/><rect x="16" y="37" width="16" height="6" rx="3" fill="#fff" opacity=".8"/><rect x="41" y="13" width="2.5" height="34" rx="1.2" fill="#fff" opacity=".7"/>'),
   projects: () => tile('pj' + (++iconSeq), '#F7B955', '#E07B2E', '<path d="M30 12a11 11 0 0 0-6 20.2V37h12v-4.8A11 11 0 0 0 30 12z" fill="#fff"/><rect x="24" y="40" width="12" height="3.5" rx="1.5" fill="#fff"/><rect x="26" y="46" width="8" height="3" rx="1.5" fill="#fff" opacity=".8"/><path d="M27 30l3-6 3 6" fill="none" stroke="#E07B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'),
@@ -56,7 +56,7 @@ const ICONS = {
   $('srTitle').textContent = `${P.name}: ${P.tagline}`;
   $('aboutName').textContent = P.name;
   $('aboutLede').textContent = P.tagline;
-  $('avaImg').alt = `Pixel-art portrait of ${P.name}`;
+  $('avaImg').alt = `Pop-art portrait of ${P.name}`;
   $('aboutBio').innerHTML = P.bio.map(p => `<p class="bio">${esc(p)}</p>`).join('');
   const org = x => x.orgUrl ? `<a href="${esc(x.orgUrl)}" target="_blank" rel="noopener">${esc(x.org)}</a>` : esc(x.org);
   $('nowList').innerHTML = SITE.now.map(x => x.since
@@ -320,9 +320,6 @@ document.addEventListener('visibilitychange', () => document.body.classList.togg
 })();
 let toastT = null;
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2800); }
-
-/* ---------- About: avatar palettes ---------- */
-(() => { const pals = ['color', 'amber', 'green', 'ink']; let k = 0; $('ava').addEventListener('click', () => { k = (k + 1) % pals.length; $('avaImg').src = `/assets/avatar/${pals[k]}.png`; }); })();
 
 /* ---------- My journey: timeline ---------- */
 const timeline = (() => {

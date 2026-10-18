@@ -39,7 +39,7 @@ const ICO = {
   monitor: '<svg viewBox="0 0 48 48"><rect x="4" y="6" width="40" height="28" rx="3" fill="#F2F2EC" stroke="#6F86AE"/><rect x="8" y="10" width="32" height="20" fill="url(#iGlobe)"/><path d="M8 24c8-6 16-6 32 0v6H8z" fill="#4FA733"/><rect x="18" y="34" width="12" height="5" fill="#C9C5B2"/><rect x="12" y="39" width="24" height="3" rx="1.5" fill="#8F8B76"/></svg>',
   warn: '<svg viewBox="0 0 16 16"><path d="M8 1l7 13H1z" fill="#F2C14E" stroke="#8A5A10"/><rect x="7" y="5" width="2" height="5" fill="#1B1B1B"/><rect x="7" y="11" width="2" height="2" fill="#1B1B1B"/></svg>',
 };
-const avatarImg = '<img src="/assets/avatar/color.png" alt="">';
+const avatarImg = '<img src="/assets/avatar/avatar.webp" alt="">';
 const glyph = name => name === 'avatar' ? avatarImg : (ICO[name] || '');
 document.querySelectorAll('[data-ico]').forEach(el => { el.innerHTML = ICO[el.dataset.ico]; });
 
@@ -250,12 +250,6 @@ const welcomeTip = () => balloon('Hi, I’m Bilal', mobile()
   ? 'Tap an icon or a taskbar button to jump to a window. Change style in the bilal menu switches to the 90s or a modern look.'
   : 'Drag windows by their blue title bars. Everything else lives in the bilal menu. Prefer the 90s or a modern look? Pick Change style there, or right-click the desktop.');
 $('tipBtn').addEventListener('click', welcomeTip);
-
-/* ---------- About: avatar palettes ---------- */
-(() => {
-  const pals = ['color', 'amber', 'green', 'ink']; let k = 0;
-  $('ava').addEventListener('click', () => { k = (k + 1) % pals.length; $('ava').src = `/assets/avatar/${pals[k]}.png`; });
-})();
 
 /* ---------- My journey: timeline ---------- */
 const timeline = (() => {

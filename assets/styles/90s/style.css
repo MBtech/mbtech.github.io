@@ -64,7 +64,7 @@ button { font: inherit; color: inherit; }
 .icons { position: absolute; left: 12px; top: 10px; bottom: 10px; display: grid; grid-auto-flow: column; grid-template-rows: repeat(auto-fill, 76px); gap: 4px 10px; align-content: start; }
 .icon { width: 84px; background: none; border: 0; padding: 4px 2px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: var(--icon-label); text-decoration: none; }
 .icon .glyph { width: 40px; height: 40px; display: grid; place-items: center; }
-.icon .glyph svg, .icon .glyph img { width: 40px; height: 40px; image-rendering: pixelated; display: block; }
+.icon .glyph svg, .icon .glyph img { width: 40px; height: 40px; display: block; }
 .icon span { font-family: "Pixelify Sans", sans-serif; font-size: .8125rem; line-height: 1.15; text-align: center; padding: 1px 3px; text-shadow: 1px 1px 0 rgba(0,0,0,.45); }
 .icon[aria-selected="true"] span, .icon:focus-visible span { background: var(--sel); color: var(--sel-ink); text-shadow: none; }
 .icon:focus-visible { outline: none; }
@@ -80,7 +80,7 @@ button { font: inherit; color: inherit; }
 .win.active .tbar { background: linear-gradient(90deg, var(--title), var(--title2)); }
 .tbar:active { cursor: grabbing; }
 .tbar h2 { margin: 0; font: 600 .9375rem/1 "Pixelify Sans", sans-serif; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tbar img { width: 16px; height: 16px; image-rendering: pixelated; }
+.tbar img { width: 16px; height: 16px; }
 .tbar .tb { width: 20px; height: 18px; padding: 0; background: var(--face); border: 0; color: var(--ink); cursor: pointer; display: grid; place-items: center;
   box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo), inset 2px 2px var(--face); }
 .tbar .tb:active { box-shadow: inset 1px 1px var(--dk), inset -1px -1px var(--hi); }
@@ -99,7 +99,7 @@ button { font: inherit; color: inherit; }
 .tabpanel { padding: 14px; box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo); }
 .tabpanel[hidden] { display: none; }
 .who { display: flex; gap: 14px; align-items: flex-start; }
-.who .ava { width: 96px; height: 96px; image-rendering: pixelated; flex: none; background: var(--screen); padding: 4px;
+.who .ava { width: 96px; height: 96px; flex: none; background: var(--screen); padding: 4px;
   box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--hi), inset 2px 2px var(--dk); }
 .who h1 { margin: 0 0 4px; font: 700 1.5rem/1.1 "Pixelify Sans", sans-serif; }
 .who p { margin: 0 0 8px; }
@@ -165,7 +165,7 @@ table.files { width: 100%; border-collapse: collapse; font-size: .8125rem; }
 #taskbar { position: fixed; left: 0; right: 0; bottom: 0; height: 40px; background: var(--face); display: flex; align-items: center; gap: 4px; padding: 4px;
   box-shadow: inset 0 1px var(--hi), inset 0 2px var(--face), 0 -1px var(--lo); z-index: 9000; }
 #menuBtn { display: flex; align-items: center; gap: 6px; font-weight: 700; padding: 3px 10px 3px 6px; height: 32px; }
-#menuBtn img { width: 22px; height: 22px; image-rendering: pixelated; }
+#menuBtn img { width: 22px; height: 22px; }
 .tasks { display: flex; gap: 4px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .tasks .btn { height: 32px; min-width: 120px; max-width: 180px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .875rem; flex: none; }
 .tray { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px; font: .875rem/1 "Pixelify Sans", sans-serif;
@@ -179,7 +179,7 @@ table.files { width: 100%; border-collapse: collapse; font-size: .8125rem; }
 #menu li a, #menu li button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 10px; background: none; border: 0; text-align: left; cursor: pointer;
   color: var(--ink); text-decoration: none; font-family: "Pixelify Sans", sans-serif; }
 #menu li a:hover, #menu li button:hover, #menu li a:focus-visible, #menu li button:focus-visible { background: var(--sel); color: var(--sel-ink); outline: none; }
-#menu li svg, #menu li img { width: 20px; height: 20px; image-rendering: pixelated; }
+#menu li svg, #menu li img { width: 20px; height: 20px; }
 #menu hr { border: 0; height: 2px; box-shadow: inset 0 1px var(--lo), inset 0 -1px var(--hi); margin: 3px 4px; }
 
 
@@ -229,7 +229,7 @@ table.files { width: 100%; border-collapse: collapse; font-size: .8125rem; }
 #boot .card { width: min(420px, calc(100vw - 32px)); background: var(--face); padding: 3px;
   box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo), inset 2px 2px var(--face), 6px 6px 0 rgba(0,0,0,.3); }
 #boot .card .inner { display: flex; gap: 16px; align-items: center; padding: 22px 20px 16px; background: linear-gradient(90deg, var(--title), var(--title2)); color: #fff; }
-#boot .card img { width: 72px; height: 72px; image-rendering: pixelated; background: var(--screen); padding: 3px; }
+#boot .card img { width: 72px; height: 72px; background: var(--screen); padding: 3px; }
 #boot .card h1 { margin: 0; font: 700 1.5rem/1.1 "Pixelify Sans", sans-serif; }
 #boot .card p { margin: 4px 0 0; font: .875rem/1.3 "Pixelify Sans", sans-serif; opacity: .85; }
 #boot .prog { margin: 12px 12px 6px; height: 20px; padding: 3px; display: flex; gap: 2px; background: var(--field);

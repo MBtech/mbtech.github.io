@@ -252,7 +252,7 @@ function switchStyle(id) {
 
 /* ---------- icons, menu, taskbar ---------- */
 const PROGRAMS = [
-  { id: 'w-about', label: 'About me', img: '/assets/avatar/color.png' },
+  { id: 'w-about', label: 'About me', img: '/assets/avatar/avatar.webp' },
   { id: 'w-work', label: 'What I do', icon: 'case' },
   { id: 'w-journey', label: 'My journey', icon: 'chart' },
   { id: 'w-projects', label: 'Projects', icon: 'bulb' },
@@ -308,7 +308,7 @@ $('menu').addEventListener('keydown', e => {
 document.addEventListener('click', e => { if (!$('menu').hidden && !e.target.closest('#menu')) toggleMenu(false); });
 (() => { const tick = () => { const d = new Date(); $('clock').textContent = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); $('clock').title = d.toDateString(); }; tick(); setInterval(tick, 1000); })();
 
-/* ---------- About me: tabs + avatar palettes ---------- */
+/* ---------- About me: tabs ---------- */
 (() => {
   const tabs = [...document.querySelectorAll('#w-about [role=tab]')];
   const pick = t => tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $(x.getAttribute('aria-controls')).hidden = !on; });
@@ -316,8 +316,6 @@ document.addEventListener('click', e => { if (!$('menu').hidden && !e.target.clo
     t.addEventListener('click', () => pick(t));
     t.addEventListener('keydown', e => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; pick(n); n.focus(); } });
   });
-  const pals = ['color', 'amber', 'green', 'ink']; let k = 0;
-  $('ava').addEventListener('click', () => { k = (k + 1) % pals.length; $('ava').src = `/assets/avatar/${pals[k]}.png`; });
 })();
 
 /* ---------- My journey: timeline ---------- */
