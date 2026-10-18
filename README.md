@@ -14,7 +14,7 @@ The site remembers the last style a visitor used, and `/` sends them back to it.
 ## Updating the content
 
 Everything the site says is in **`data/site.js`**: bio, current roles, services, timeline,
-papers, citation counts and the reading list. All three styles read from it, so edit it once.
+projects, papers, citation counts and the reading list. All three styles read from it, so edit it once.
 
 - Add a paper: add an entry to `papers` (newest first). `older: true` hides it behind
   "show older papers". `url` can be a link or a PDF in `papers/`.
@@ -24,7 +24,7 @@ papers, citation counts and the reading list. All three styles read from it, so 
 
 ## Links that open a window
 
-`/?open=papers,reading` opens those windows directly. Window ids: `about`, `work`, `journey`,
+`/?open=papers,reading` opens those windows directly. Window ids: `about`, `work`, `journey`, `projects`,
 `papers`, `reading`, `links`, `terminal`. The old `/reading` page redirects to the
 reading list.
 

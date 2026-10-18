@@ -30,6 +30,7 @@ const ICO = {
   journey: '<svg viewBox="0 0 48 48"><rect x="7" y="5" width="34" height="38" rx="3" fill="url(#iDoc)" stroke="#6F86AE"/><rect x="11" y="12" width="20" height="5" rx="2.5" fill="#3FB33A"/><rect x="17" y="20" width="18" height="5" rx="2.5" fill="#F0A847"/><rect x="13" y="28" width="12" height="5" rx="2.5" fill="#3E9FD8"/><rect x="11" y="36" width="16" height="3" rx="1.5" fill="#8A63C9"/><path d="M33 8v32" stroke="#E2602F" stroke-width="2"/></svg>',
   folder: '<svg viewBox="0 0 48 48"><path d="M4 12a3 3 0 0 1 3-3h11l4 4h19a3 3 0 0 1 3 3v22a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z" fill="url(#iFolderBack)" stroke="#A8700C"/><rect x="10" y="14" width="26" height="16" fill="#fff" stroke="#C9C5B2"/><path d="M13 19h18M13 23h14" stroke="#9AA6B8"/><path d="M4 20h40v18a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z" fill="url(#iFolder)" stroke="#A8700C"/></svg>',
   links: '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="url(#iGlobe)" stroke="#164FA8"/><ellipse cx="24" cy="24" rx="8" ry="18" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.5"/><path d="M6 24h36M9 15h30M9 33h30" stroke="#fff" stroke-opacity=".75" stroke-width="1.5"/><ellipse cx="18" cy="14" rx="8" ry="4" fill="#fff" opacity=".35"/></svg>',
+  bulb: '<svg viewBox="0 0 48 48"><path d="M24 4a14 14 0 0 0-8 25.5V34h16v-4.5A14 14 0 0 0 24 4z" fill="url(#iBulb)" stroke="#A8700C"/><rect x="16" y="34" width="16" height="4" fill="#C9C5B2" stroke="#8F8B76"/><rect x="17" y="38" width="14" height="4" fill="#B5B19E" stroke="#8F8B76"/><rect x="20" y="42" width="8" height="3" rx="1.5" fill="#8F8B76"/><path d="M20 26l4-8 4 8" fill="none" stroke="#A8700C" stroke-width="2" stroke-linejoin="round"/><ellipse cx="19" cy="12" rx="5" ry="3" fill="#fff" opacity=".6"/></svg>',
   globe: '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="url(#iGlobe)" stroke="#164FA8"/><ellipse cx="24" cy="24" rx="8" ry="18" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.5"/><path d="M6 24h36M9 15h30M9 33h30" stroke="#fff" stroke-opacity=".75" stroke-width="1.5"/></svg>',
   term: '<svg viewBox="0 0 48 48"><rect x="4" y="8" width="40" height="32" rx="4" fill="url(#iTerm)" stroke="#0F1114"/><rect x="4" y="8" width="40" height="6" rx="3" fill="#2A6FE6"/><path d="M11 22l6 4-6 4" fill="none" stroke="#7FE0A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 31h10" stroke="#7FE0A6" stroke-width="2.5" stroke-linecap="round"/></svg>',
   book: '<svg viewBox="0 0 48 48"><rect x="10" y="5" width="28" height="38" rx="3" fill="url(#iBook)" stroke="#7A1E15"/><rect x="34" y="8" width="5" height="34" fill="#F7F3E6" stroke="#C9C5B2"/><rect x="15" y="12" width="15" height="4" rx="1" fill="#fff" opacity=".85"/><rect x="15" y="19" width="10" height="2" fill="#fff" opacity=".6"/></svg>',
@@ -174,6 +175,7 @@ function layout() {
     put('w-work', L + avail - ww, 44, ww);
     put('w-journey', L + 30, Math.min(H * .45, 360), Math.min(820, avail - 30));
   }
+  put('w-projects', L + 170, 50, 640);
   put('w-papers', L + 200, 70, 760);
   put('w-reading', L + 230, 90, 640);
   put('w-links', L + 260, 110, 380);
@@ -187,6 +189,7 @@ const PROGRAMS = [
   { id: 'w-about', label: 'About me', icon: 'avatar', note: 'Who I am and what I’m doing now' },
   { id: 'w-work', label: 'What I do', icon: 'case', note: 'Fractional AI leadership' },
   { id: 'w-journey', label: 'My journey', icon: 'journey', note: '2008 to now' },
+  { id: 'w-projects', label: 'Projects', icon: 'bulb', note: 'PaperBoy and tangents' },
   { id: 'w-papers', label: 'Papers', icon: 'folder', note: `${PAPERS.length} papers` },
   { id: 'w-reading', label: 'Reading list', icon: 'book', note: 'Books I recommend' },
   { id: 'w-links', label: 'Links', icon: 'links', note: 'Email, GitHub, Scholar' },
@@ -423,8 +426,8 @@ document.addEventListener('pointerdown', e => { if (!ctxMenu.hidden && !e.target
 const term = (() => {
   const out = $('tout'), input = $('tin'), form = $('tform');
   const hist = []; let hi = 0;
-  const NAMES = { about: 'w-about', me: 'w-about', what: 'w-work', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-terminal', style: 'w-style' };
-  const LISTED = { about: 'w-about', work: 'w-work', journey: 'w-journey', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-terminal' };
+  const NAMES = { about: 'w-about', me: 'w-about', what: 'w-work', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-terminal', style: 'w-style' };
+  const LISTED = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-terminal' };
   const URL = { email: 'mailto:' + SITE.links.email, team: SITE.links.leadershift };
   const GH_USER = SITE.links.github.replace(/\/+$/, '').split('/').pop();
   const print = (html, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); while (out.children.length > 200) out.firstChild.remove(); out.scrollTop = out.scrollHeight; };
@@ -446,7 +449,7 @@ const term = (() => {
     help: () => print(
 `<span class="a">commands</span>
   ls                     list windows
-  open|close &lt;window&gt;    about, work, journey, papers, reading, links, terminal
+  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links, terminal
   whoami                 who I am
   papers [--grep x] [--sort cites] [--all]
   timeline [year]        what I was doing that year, or replay it all
@@ -566,6 +569,7 @@ addEventListener('keydown', e => {
   $('teamTitle').textContent = S.team.title; $('teamText').textContent = S.team.text; $('teamLink').textContent = S.team.cta; $('teamLink').href = L.leadershift;
   $('scholarNote').innerHTML = `<a href="${esc(L.scholar)}">Google Scholar</a>: ${SITE.scholar.citations} citations, h-index ${SITE.scholar.hIndex}`;
   ReadingList.render($('rl'));
+  Projects.render($('pj'));
 })();
 
 /* ---------- styles: switch between modern, 2000s and 90s ---------- */
@@ -592,7 +596,7 @@ function switchStyle(id) { if (id === Styles.current) { closeWin($('w-style')); 
   else {
     try { open = JSON.parse(store.get('open')); } catch {}
     if (!Array.isArray(open)) open = DEFAULT_OPEN;
-    if (mobile()) open = [...new Set([...DEFAULT_OPEN, 'w-papers', 'w-reading', 'w-links', ...open])].filter(id => id !== 'w-terminal' && id !== 'w-style');
+    if (mobile()) open = [...new Set([...DEFAULT_OPEN, 'w-projects', 'w-papers', 'w-reading', 'w-links', ...open])].filter(id => id !== 'w-terminal' && id !== 'w-style');
   }
   open.filter(id => $(id)).forEach(id => openWin($(id)));
   if (!mobile()) layout();

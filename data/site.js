@@ -44,6 +44,33 @@ window.SITE = {
     team: { title: 'A wider team', text: 'For a more complete engagement, through The Leadershift Studio.', cta: 'Go to The Leadershift Studio' },
   },
 
+  // Things I build on the side. tools: smaller apps listed under a project.
+  projects: {
+    intro: 'Things I build on the side, mostly for researchers and developers.',
+    items: [
+      {
+        name: 'PaperBoy', url: 'https://paperboy.tangents.fyi/', tagline: 'The latest research, on your desk by morning.',
+        text: 'A Slack app that finds new computer science papers on arXiv and Semantic Scholar, ranks them by how well they fit each channel’s topic, and posts each one as its own thread. People without Slack can get a weekly email instead.',
+      },
+      {
+        name: 'tangents', url: 'https://tangents.fyi/', tagline: 'Small tools for researchers and developers.',
+        text: 'A collection of small apps, each built to do one job well.',
+        tools: [
+          { name: 'GPU Memory Estimator', url: 'https://gpusize.tangents.fyi/', text: 'How much GPU memory a Hugging Face model needs' },
+          { name: 'Dependency Risk Score', url: 'https://depscore.tangents.fyi/', text: 'How likely an npm or PyPI package is to be abandoned' },
+          { name: 'Premortem', url: 'https://premortem.tangents.fyi/', text: 'Find the risks in a project plan before you start' },
+          { name: 'Citation Network', url: 'https://cnetwork.tangents.fyi/', text: 'See how papers cite each other' },
+          { name: 'Vazeer', url: 'https://vazeer.tangents.fyi/', text: 'An AI peer reviewer for paper drafts' },
+          { name: 'Reference Verifier', url: 'https://refcheck.tangents.fyi/', text: 'Catch made-up or wrong references in a paper' },
+          { name: 'Feynman', url: 'https://feynman.tangents.fyi/', text: 'Learn a topic by teaching it to an AI student' },
+          { name: 'Outofbox', url: 'https://outofbox.tangents.fyi/', text: 'Prompts and limits that push creative thinking' },
+          { name: 'ShillBot 3000', url: 'https://shillbot.tangents.fyi/', text: 'A research demo of a chatbot that slips in hidden ads' },
+          { name: 'Blog', url: 'https://blog.tangents.fyi/', text: 'Notes from building the tools' },
+        ],
+      },
+    ],
+  },
+
   // lane: industry | research | education
   roles: [
     { id: 'soko', lane: 'industry', title: 'Technical Advisor', org: 'Soko', when: 'May 2026 – now', spans: [[2026.33, null]], detail: 'Advising a local guide app.' },

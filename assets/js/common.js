@@ -1,5 +1,5 @@
 /*
- * Shared by all three styles: style switching, deep links, data helpers and the reading list.
+ * Shared by all three styles: style switching, deep links, data helpers, the reading list and projects.
  * Load after /data/site.js.
  */
 (() => {
@@ -18,7 +18,7 @@
     { id: '90s', label: '90s', path: '/90s/' },
   ];
   // Window ids every style understands, for ?open= links and for carrying open windows across a switch.
-  const APPS = ['about', 'work', 'journey', 'papers', 'reading', 'links', 'terminal'];
+  const APPS = ['about', 'work', 'journey', 'projects', 'papers', 'reading', 'links', 'terminal'];
 
   const Styles = {
     list: STYLES,
@@ -107,7 +107,28 @@
     },
   };
 
+  /* ---------- projects ---------- */
+  // Renders the projects into `el`. Styles theme it through the .pj-* classes.
+  const Projects = {
+    render(el) {
+      const p = SITE.projects;
+      const a = (url, text) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(text)}</a>`;
+      const host = url => url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      el.classList.add('pj');
+      el.innerHTML = `<p class="pj-intro">${esc(p.intro)}</p>
+        <ul class="pj-list">${p.items.map(x => `
+          <li class="pj-item">
+            <h3>${a(x.url, x.name)} <span class="pj-host">${esc(host(x.url))}</span></h3>
+            <p class="pj-tag">${esc(x.tagline)}</p>
+            <p class="pj-text">${esc(x.text)}</p>
+            ${x.tools ? `<ul class="pj-tools">${x.tools.map(t => `<li>${a(t.url, t.name)}<span>${esc(t.text)}</span></li>`).join('')}</ul>` : ''}
+          </li>`).join('')}
+        </ul>`;
+    },
+  };
+
   window.Styles = Styles;
   window.SiteData = Data;
   window.ReadingList = ReadingList;
+  window.Projects = Projects;
 })();

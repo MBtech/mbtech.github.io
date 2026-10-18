@@ -26,7 +26,7 @@ const ROLES = SiteData.roleRows((lane, r) => r.current ? 'g' : LANE_COL[lane]);
 const PAPERS = SiteData.paperRows();
 const Y0 = 2008, Y1 = Math.floor(SiteData.NOW);
 // App ids shared by all styles, and the windows that show them here.
-const APP = { about: 'w-about', work: 'w-work', journey: 'w-journey', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-term' };
+const APP = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-term' };
 
 /* ---------- pixel icons, drawn from 16x16 maps ---------- */
 const PAL = { '#': '#1E1D1A', w: '#FBF9F4', f: '#B9B4AA', k: '#0E1A14', g: '#5FD08A', a: '#F2B33D', r: '#E0505C', y: '#F2C94C', Y: '#C99A1E', b: '#3E6FB8', B: '#233B63', n: '#8A5A2B', N: '#5E3B1B', p: '#B07CE0', c: '#5EC2D8' };
@@ -49,6 +49,9 @@ const MAPS = {
   book: [
     '................', '..############..', '..#rrrrrrrrrr##.', '..#rrrrrrrrrr#w#', '..#rrwwwwwwrr#w#', '..#rrrrrrrrrr#w#', '..#rrwwwwrrrr#w#', '..#rrrrrrrrrr#w#',
     '..#rrrrrrrrrr#w#', '..#rrrrrrrrrr#w#', '..#rrrrrrrrrr#w#', '..#rrrrrrrrrr#w#', '..############w#', '...#wwwwwwwwwww#', '...#############', '................'],
+  bulb: [
+    '................', '.....######.....', '....#yyyyyy#....', '...#yywyyyyy#...', '...#ywyyyyyy#...', '...#yyyyyyyy#...', '...#yyy#yyyy#...', '....#yy#yyy#....',
+    '.....#y#yy#.....', '.....#yyyy#.....', '.....######.....', '.....#ffff#.....', '.....######.....', '.....#ffff#.....', '......####......', '................'],
   display: [
     '................', '.##############.', '.#wwwwwwwwwwww#.', '.#wccccccccccw#.', '.#wccyyccccccw#.', '.#wcyyyyccbbcw#.', '.#wccyyccbbbbw#.', '.#wggggggggggw#.',
     '.#wwwwwwwwwwww#.', '.##############.', '......#ff#......', '.....##ff##.....', '...##########...', '...#ffffffff#...', '...##########...', '................'],
@@ -93,6 +96,7 @@ function icon(name) {
   $('linkList').addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b) openWin($(b.dataset.open)); });
 
   ReadingList.render($('readingBody'));
+  Projects.render($('pj'));
   $('pscholar').textContent = `${S.scholar.citations} citations, h-index ${S.scholar.hIndex}`;
   $('bootName').textContent = P.name;
 })();
@@ -229,6 +233,7 @@ function layout() {
     if (H - full >= 300) put('w-journey', Lx, full, Math.min(860, avail));
     else put('w-journey', Lx, 16 + ah + 14, aw);
   } else put('w-journey', Lx + 80, $('w-work').offsetTop + wh * .55, Math.min(820, avail - 80));
+  put('w-projects', Lx + 140, 40, 600);
   put('w-papers', Lx + 180, 60, 760);
   put('w-reading', Lx + 220, 70, 560);
   $('w-reading').style.height = Math.min(600, H - 90) + 'px';
@@ -250,6 +255,7 @@ const PROGRAMS = [
   { id: 'w-about', label: 'About me', img: '/assets/avatar/color.png' },
   { id: 'w-work', label: 'What I do', icon: 'case' },
   { id: 'w-journey', label: 'My journey', icon: 'chart' },
+  { id: 'w-projects', label: 'Projects', icon: 'bulb' },
   { id: 'w-papers', label: 'Papers', icon: 'folder' },
   { id: 'w-reading', label: 'Reading list', icon: 'book' },
   { id: 'w-links', label: 'Links', icon: 'link' },
@@ -518,8 +524,8 @@ document.addEventListener('pointerdown', e => { if (!ctx.hidden && !e.target.clo
 (() => {
   const out = $('tout'), input = $('tin'), form = $('tform');
   const hist = []; let hi = 0;
-  const NAMES = { about: 'w-about', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-term', display: 'w-display' };
-  const WINLIST = { about: 'w-about', work: 'w-work', journey: 'w-journey', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-term' };
+  const NAMES = { about: 'w-about', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-term', display: 'w-display' };
+  const WINLIST = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-term' };
   const print = (html, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); while (out.children.length > 200) out.firstChild.remove(); out.scrollTop = out.scrollHeight; };
   // Open or raise a window; keep typing in the terminal.
   const show = id => {
@@ -541,7 +547,7 @@ document.addEventListener('pointerdown', e => { if (!ctx.hidden && !e.target.clo
     help: () => print(
 `<span class="a">commands</span>
   ls                     list windows
-  open|close &lt;window&gt;    about, work, journey, papers, reading, links
+  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links
   whoami                 who I am
   papers [--grep x] [--sort cites] [--all]
   timeline [year]        what I was doing that year, or replay it all
@@ -648,7 +654,7 @@ let booted = false;
   if (req) open = req.map(a => APP[a]);
   else { try { open = JSON.parse(store.get('open')); } catch {} }
   if (!Array.isArray(open) || (!req && !open.length)) open = DEFAULT_OPEN;
-  if (mobile()) open = [...new Set([...open, ...DEFAULT_OPEN, 'w-papers'])];
+  if (mobile()) open = [...new Set([...open, ...DEFAULT_OPEN, 'w-projects', 'w-papers'])];
   open.filter(id => $(id)).forEach(id => openWin($(id)));
   if (!mobile()) layout();
   const first = req && req.length ? $(APP[req[0]]) : $('w-about');

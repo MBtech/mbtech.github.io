@@ -36,6 +36,7 @@ const ICONS = {
   about: () => `<svg viewBox="0 0 60 60" aria-hidden="true"><defs><linearGradient id="ga${++iconSeq}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7C76C"/><stop offset="1" stop-color="#EE9A6E"/></linearGradient></defs><rect width="60" height="60" fill="url(#ga${iconSeq})"/><image href="/assets/avatar/color.png" x="8" y="8" width="44" height="44" style="image-rendering:pixelated"/></svg>`,
   work: () => tile('w' + (++iconSeq), '#3FBF8C', '#167A5A', '<rect x="13" y="22" width="34" height="24" rx="5" fill="#fff"/><path d="M24 22v-4a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v4" fill="none" stroke="#fff" stroke-width="3"/><rect x="13" y="30" width="34" height="3" fill="#167A5A" opacity=".35"/><rect x="27" y="28" width="6" height="7" rx="2" fill="#167A5A"/>'),
   journey: () => tile('j' + (++iconSeq), '#2C9AAE', '#155463', '<rect x="12" y="17" width="20" height="6" rx="3" fill="#fff"/><rect x="20" y="27" width="28" height="6" rx="3" fill="#FFD27A"/><rect x="16" y="37" width="16" height="6" rx="3" fill="#fff" opacity=".8"/><rect x="41" y="13" width="2.5" height="34" rx="1.2" fill="#fff" opacity=".7"/>'),
+  projects: () => tile('pj' + (++iconSeq), '#F7B955', '#E07B2E', '<path d="M30 12a11 11 0 0 0-6 20.2V37h12v-4.8A11 11 0 0 0 30 12z" fill="#fff"/><rect x="24" y="40" width="12" height="3.5" rx="1.5" fill="#fff"/><rect x="26" y="46" width="8" height="3" rx="1.5" fill="#fff" opacity=".8"/><path d="M27 30l3-6 3 6" fill="none" stroke="#E07B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'),
   papers: () => tile('p' + (++iconSeq), '#F4F1E8', '#D7D2C4', '<rect x="19" y="11" width="26" height="34" rx="3" fill="#C8C1AF"/><rect x="15" y="15" width="26" height="34" rx="3" fill="#fff" stroke="#BDB6A3"/><rect x="20" y="22" width="16" height="2.5" rx="1" fill="#167A5A"/><rect x="20" y="28" width="14" height="2" rx="1" fill="#A49D8A"/><rect x="20" y="33" width="16" height="2" rx="1" fill="#A49D8A"/><rect x="20" y="38" width="10" height="2" rx="1" fill="#A49D8A"/>'),
   links: () => tile('l' + (++iconSeq), '#F49A7E', '#D2593F', '<path d="M27 33a7 7 0 0 0 10 0l6-6a7 7 0 0 0-10-10l-2 2" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M33 27a7 7 0 0 0-10 0l-6 6a7 7 0 0 0 10 10l2-2" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'),
   term: () => tile('t' + (++iconSeq), '#25332F', '#0D1513', '<path d="M15 22l9 8-9 8" fill="none" stroke="#7FD1A0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="28" y="36" width="15" height="3.5" rx="1.5" fill="#F2B33D"/>'),
@@ -74,8 +75,9 @@ const ICONS = {
   $('helloText').textContent = `Hello, I'm ${P.short}.`;
 })();
 
-/* ---------- reading list ---------- */
+/* ---------- reading list, projects ---------- */
 ReadingList.render($('rl'));
+Projects.render($('pj'));
 function readingSearch(q) { const i = $('rl').querySelector('input[type=search]'); i.value = q; i.dispatchEvent(new Event('input')); }
 
 /* ---------- window manager ---------- */
@@ -207,6 +209,7 @@ function layout() {
   put('w-about', L0, 16, aw);
   put('w-work', side ? L0 + aw + 18 : L0 + avail * .3, side ? 16 : 70, side ? Math.min(620, avail - aw - 18) : Math.min(600, avail * .7));
   put('w-journey', L0 + 40, 60, Math.min(800, avail - 40));
+  put('w-projects', L0 + 110, 50, Math.min(640, avail - 110));
   put('w-papers', L0 + 140, 70, Math.min(720, avail - 140));
   put('w-reading', L0 + 170, 40, Math.min(640, avail - 170));
   put('w-links', L0 + 200, 110, 460);
@@ -220,6 +223,7 @@ const APPS = [
   { id: 'w-about', label: 'About me', icon: 'about', fav: true },
   { id: 'w-work', label: 'What I do', icon: 'work', fav: true },
   { id: 'w-journey', label: 'My journey', icon: 'journey', fav: true },
+  { id: 'w-projects', label: 'Projects', icon: 'projects' },
   { id: 'w-papers', label: 'Papers', icon: 'papers' },
   { id: 'w-reading', label: 'Reading list', icon: 'books' },
   { id: 'w-links', label: 'Links', icon: 'links' },
@@ -470,6 +474,7 @@ const palette = (() => {
     out.push(...apps.slice(0, words.length ? 4 : 7), ...acts.slice(0, words.length ? 5 : 4));
     if (words.length) {
       out.push(...PAPERS.filter(p => match(p[2] + ' ' + p[1] + ' ' + p[0] + ' ' + p[6].authors)).slice(0, 6).map(p => ({ group: 'Papers', label: p[2], hint: `${p[1]} ${p[0]}`, icon: () => ICONS.papers(), run: () => { openWin($('w-papers'), { focus: true }); papers.all(true); papers.grep(q); } })));
+      out.push(...SITE.projects.items.flatMap(x => [x, ...(x.tools || [])]).filter(x => match(x.name + ' ' + (x.tagline || x.text) + ' project tool')).slice(0, 4).map(x => ({ group: 'Projects', label: x.name, hint: x.tagline || x.text, icon: () => ICONS.projects(), run: () => window.open(x.url, '_blank', 'noopener') })));
       out.push(...SITE.books.shelves.flatMap(s => s.books.map(b => ({ ...b, shelf: s.name }))).filter(b => match(b.title + ' ' + b.author)).slice(0, 4).map(b => ({ group: 'Books', label: b.title, hint: b.author, icon: () => ICONS.books(), run: () => { openWin($('w-reading'), { focus: true }); readingSearch(b.title); } })));
       out.push(...LINKS.filter(l => match(l.label + ' ' + l.note)).map(l => ({ group: 'Links', label: l.label, hint: l.note, icon: () => ICONS[l.icon](), run: () => { if (l.open) { openWin($(l.open), { focus: true }); return; } const a = document.createElement('a'); a.href = l.href; if (ext(l.href)) { a.target = '_blank'; a.rel = 'noopener'; } a.click(); } })));
     }
@@ -506,7 +511,7 @@ const palette = (() => {
 const term = (() => {
   const out = $('tout'), input = $('tin'), form = $('tform');
   const hist = []; let hi = 0;
-  const NAMES = { about: 'w-about', me: 'w-about', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-terminal', term: 'w-terminal' };
+  const NAMES = { about: 'w-about', me: 'w-about', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-terminal', term: 'w-terminal' };
   const print = (html, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); while (out.children.length > 200) out.firstChild.remove(); out.scrollTop = out.scrollHeight; };
   const show = id => { openWin($(id), { focus: false }); if (!mobile() && id !== 'w-terminal') { $('w-terminal').style.zIndex = ++topZ; input.focus({ preventScroll: true }); } };
   let repos = null;
@@ -521,7 +526,7 @@ const term = (() => {
     help: () => print(
 `<span class="a">commands</span>
   ls                     list windows
-  open|close &lt;window&gt;    about, work, journey, papers, reading, links
+  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links
   whoami                 who I am
   papers [--grep x] [--sort cites] [--all]
   timeline [year]        what I was doing that year, or replay it

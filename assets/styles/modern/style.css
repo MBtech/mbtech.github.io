@@ -246,6 +246,18 @@ mark { background: color-mix(in srgb, var(--req) 35%, transparent); color: inher
 .links b { display: block; font-weight: 600; }
 .links span { color: var(--muted); font-size: 13.5px; }
 
+/* Projects */
+.pj-intro { margin: 0 0 14px; color: var(--muted); }
+.pj-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.pj-item { padding: 14px 16px; border-radius: 14px; background: var(--chip); }
+.pj-item h3 { margin: 0; font-size: 18px; font-weight: 650; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.pj-host { font-size: 12.5px; font-weight: 400; color: var(--muted); }
+.pj-tag { margin: 2px 0 8px; font-weight: 550; }
+.pj-text { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.pj-tools { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: 14px; }
+.pj-tools a { font-weight: 600; }
+.pj-tools span { display: block; color: var(--muted); font-size: 13px; line-height: 1.4; }
+
 /* Terminal: always dark, the one place with a monospace face */
 .win.termwin { --glass: rgba(12,20,18,.9); --edge: rgba(255,255,255,.08); color: #DDE7E2; }
 .win.termwin .tbar h2 { color: #DDE7E2; }
@@ -339,7 +351,7 @@ mark { background: color-mix(in srgb, var(--req) 35%, transparent); color: inher
   .back { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; color: var(--accent); font-size: 16px; font-weight: 550; padding: 6px 8px; cursor: pointer; }
   .back svg { width: 16px; height: 16px; }
   .wbody { padding: 6px 18px 28px; }
-  .services, .ways { grid-template-columns: 1fr; }
+  .services, .ways, .pj-tools { grid-template-columns: 1fr; }
   .who { flex-direction: column; gap: 14px; }
   .trow, .axis { grid-template-columns: 112px 1fr; gap: 8px; }
   .trow .lab { font-size: 12.5px; }
