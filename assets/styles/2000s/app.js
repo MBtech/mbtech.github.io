@@ -37,10 +37,10 @@ const ICO = {
   check: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="url(#iGo)" stroke="#22751F"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   info: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#2A6FE6"/><rect x="7" y="7" width="2" height="5" fill="#fff"/><rect x="7" y="4" width="2" height="2" fill="#fff"/></svg>',
   monitor: '<svg viewBox="0 0 48 48"><rect x="4" y="6" width="40" height="28" rx="3" fill="#F2F2EC" stroke="#6F86AE"/><rect x="8" y="10" width="32" height="20" fill="url(#iGlobe)"/><path d="M8 24c8-6 16-6 32 0v6H8z" fill="#4FA733"/><rect x="18" y="34" width="12" height="5" fill="#C9C5B2"/><rect x="12" y="39" width="24" height="3" rx="1.5" fill="#8F8B76"/></svg>',
+  person: '<svg viewBox="0 0 48 48"><path d="M8 43c0-10 7-16 16-16s16 6 16 16z" fill="url(#iGlobe)" stroke="#164FA8"/><circle cx="24" cy="16" r="9" fill="url(#iBulb)" stroke="#A8700C"/><ellipse cx="21" cy="12" rx="4" ry="2.5" fill="#fff" opacity=".6"/></svg>',
   warn: '<svg viewBox="0 0 16 16"><path d="M8 1l7 13H1z" fill="#F2C14E" stroke="#8A5A10"/><rect x="7" y="5" width="2" height="5" fill="#1B1B1B"/><rect x="7" y="11" width="2" height="2" fill="#1B1B1B"/></svg>',
 };
-const avatarImg = '<img src="/assets/avatar/avatar.webp" alt="">';
-const glyph = name => name === 'avatar' ? avatarImg : (ICO[name] || '');
+const glyph = name => ICO[name] || '';
 document.querySelectorAll('[data-ico]').forEach(el => { el.innerHTML = ICO[el.dataset.ico]; });
 
 /* ---------- window manager ---------- */
@@ -186,7 +186,7 @@ function layout() {
 
 /* ---------- icons, menu, taskbar ---------- */
 const PROGRAMS = [
-  { id: 'w-about', label: 'About me', icon: 'avatar', note: 'Who I am and what I’m doing now' },
+  { id: 'w-about', label: 'About me', icon: 'person', note: 'Who I am and what I’m doing now' },
   { id: 'w-work', label: 'What I do', icon: 'case', note: 'Fractional AI leadership' },
   { id: 'w-journey', label: 'My journey', icon: 'journey', note: '2008 to now' },
   { id: 'w-projects', label: 'Projects', icon: 'bulb', note: 'PaperBoy and tangents' },

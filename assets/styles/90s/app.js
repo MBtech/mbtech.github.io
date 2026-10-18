@@ -52,6 +52,9 @@ const MAPS = {
   bulb: [
     '................', '.....######.....', '....#yyyyyy#....', '...#yywyyyyy#...', '...#ywyyyyyy#...', '...#yyyyyyyy#...', '...#yyy#yyyy#...', '....#yy#yyy#....',
     '.....#y#yy#.....', '.....#yyyy#.....', '.....######.....', '.....#ffff#.....', '.....######.....', '.....#ffff#.....', '......####......', '................'],
+  person: [
+    '................', '......####......', '.....#aaaa#.....', '....#ayaaaa#....', '....#aaaaaa#....', '....#aaaaaa#....', '.....#aaaa#.....', '......####......',
+    '...##########...', '..#bbbbbbbbbb#..', '.#bbcbbbbbbbbb#.', '.#bbbbbbbbbbbb#.', '.#bbbbbbbbbbbb#.', '.##############.', '................', '................'],
   display: [
     '................', '.##############.', '.#wwwwwwwwwwww#.', '.#wccccccccccw#.', '.#wccyyccccccw#.', '.#wcyyyyccbbcw#.', '.#wccyyccbbbbw#.', '.#wggggggggggw#.',
     '.#wwwwwwwwwwww#.', '.##############.', '......#ff#......', '.....##ff##.....', '...##########...', '...#ffffffff#...', '...##########...', '................'],
@@ -252,7 +255,7 @@ function switchStyle(id) {
 
 /* ---------- icons, menu, taskbar ---------- */
 const PROGRAMS = [
-  { id: 'w-about', label: 'About me', img: '/assets/avatar/avatar.webp' },
+  { id: 'w-about', label: 'About me', icon: 'person' },
   { id: 'w-work', label: 'What I do', icon: 'case' },
   { id: 'w-journey', label: 'My journey', icon: 'chart' },
   { id: 'w-projects', label: 'Projects', icon: 'bulb' },
@@ -267,7 +270,7 @@ const SHORTCUTS = [
   { href: L.scholar, label: 'Google Scholar' },
   { href: L.medium, label: 'Medium' },
 ];
-const glyph = p => p.img ? `<img src="${p.img}" alt="">` : icon(p.icon || 'link');
+const glyph = p => icon(p.icon || 'link');
 let iconOrder = store.get('icons') || 'type';
 function renderIcons() {
   const items = PROGRAMS.map(p => ({ label: p.label, html: `<button class="icon" data-open="${p.id}" aria-selected="false"><span class="glyph">${glyph(p)}</span><span>${p.label}</span></button>` }));
