@@ -5,13 +5,37 @@
 .rl-search { display: flex; align-items: center; gap: 8px; }
 .rl-search input { font: inherit; font-size: max(16px, 1em); min-width: 0; width: 16em; max-width: 100%; }
 .rl-only { display: flex; align-items: center; gap: 6px; }
-.rl-shelf h3 { font-size: 1em; margin: 14px 0 6px; }
-.rl-shelf h3 span { opacity: .6; font-weight: normal; }
-.rl-shelf ul { list-style: none; margin: 0; padding: 0; }
-.rl-shelf li { padding: 3px 0; }
-.rl-author { opacity: .7; }
-.rl-author::before { content: "by "; }
-.rl-tag { font-size: .8em; padding: 0 6px; border: 1px solid currentColor; border-radius: 3px; white-space: nowrap; }
-.rl-high .rl-title { font-weight: 600; }
-.rl-no { opacity: .7; }
-.rl-count, .rl-empty { opacity: .7; font-size: .9em; }
+.rl-hint { margin: 0 0 12px; font-size: .85em; opacity: .75; max-width: 64ch; }
+.rl-star { color: #D9A227; }
+.rl-pick { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 10px; margin: 0 0 14px; }
+.rl-pick p { margin: 0; flex: 1; min-width: 0; }
+.rl-pick small { opacity: .75; }
+.rl-put { border: 0; background: none; color: inherit; cursor: pointer; font: inherit; font-size: 20px; line-height: 1; padding: 4px 8px; opacity: .7; }
+
+/* The piles. Book colours are the same in every style; styles may restyle the table and captions. */
+.rl-table { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 20px; }
+.rl-col { flex: 1 1 220px; max-width: 300px; min-width: 0; }
+.rl-pile { display: flex; flex-direction: column; padding: 0 6px; border-bottom: 7px solid #8A5A35; box-shadow: 0 6px 0 -1px #5E3B22; }
+.rl-cap { margin: 10px 0 0; font-size: .85em; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rl-cap span { font-weight: normal; opacity: .65; }
+.rl-book {
+  position: relative; display: flex; align-items: center; gap: 8px;
+  width: var(--w); height: var(--h); margin: 0 0 0 var(--x); padding: 0 10px 0 14px; border: 0; border-radius: 2px 5px 5px 2px;
+  font: inherit; text-align: left; cursor: pointer; background-color: var(--bg); color: var(--fg);
+  box-shadow: inset 0 2px 1px rgb(255 255 255 / .16), inset 0 -2px 2px rgb(0 0 0 / .3);
+  transform: rotate(var(--r)); transition: transform .18s ease, opacity .2s, filter .2s;
+}
+.rl-book:hover { transform: rotate(var(--r)) translateX(5px); }
+.rl-book:focus-visible { outline: 2px solid #D9A227; outline-offset: 2px; }
+.rl-book.rl-on { transform: translateX(18px); box-shadow: 0 0 0 2px #E6B34A, 0 6px 12px rgb(0 0 0 / .4); z-index: 2; }
+.rl-book.rl-band::after { content: ""; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 2px; background: rgb(255 255 255 / .3); }
+.rl-book.rl-high { background-image: linear-gradient(to right, transparent 4px, #E6B34A 4px 8px, transparent 8px); }
+.rl-book.rl-high .rl-t::before { content: "★ "; color: #E6B34A; }
+/* Not recommended: put back with the page edges facing out. */
+.rl-book.rl-no { background: repeating-linear-gradient(to bottom, #F4ECDB 0 2px, #DDD2BC 2px 3px); color: #5A5148; font-style: italic; }
+.rl-book.rl-off { opacity: .16; filter: saturate(.2); }
+.rl-t { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12.5px; font-weight: 600; }
+.rl-t.rl-serif { font-family: Georgia, serif; font-weight: 400; font-size: 13.5px; }
+.rl-t.rl-caps { text-transform: uppercase; letter-spacing: .07em; font-size: 11px; }
+.rl-a { font-size: 10.5px; opacity: .8; white-space: nowrap; }
+.rl-count { opacity: .7; font-size: .9em; }

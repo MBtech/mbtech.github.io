@@ -72,11 +72,18 @@
   };
 
   /* ---------- reading list ---------- */
-  // Renders the reading list into `el`. Styles theme it through the .rl-* classes.
+  // Renders the reading list into `el` as piles of books lying flat, one or more piles per shelf.
+  // Styles theme it through the .rl-* classes.
+  const PILE = 10;
+  const HUES = [150, 335, 38, 218, 12, 192];
+  // Stable pseudo-random numbers per book, so sizes and colours stay the same between visits.
+  const hash = s => { let h = 2166136261; for (const c of s) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const rnd = (b, k) => (hash(b.title + '#' + k) % 1000) / 1000;
+  const surname = a => (a || '').split(/, | and /)[0].trim().split(' ').pop();
   const ReadingList = {
     render(el) {
       const b = SITE.books;
-      const shelves = b.shelves;
+      const books = b.shelves.flatMap((s, si) => s.books.map((x, i) => ({ ...x, shelf: s.name, si, key: si + '/' + i })));
       el.classList.add('rl');
       el.innerHTML = `
         <p class="rl-note">${esc(b.note)}</p>
@@ -84,26 +91,62 @@
           <label class="rl-search"><span>Search</span><input type="search" placeholder="Title or author" spellcheck="false"></label>
           <label class="rl-only"><input type="checkbox"> Highly recommended only</label>
         </div>
-        <div class="rl-shelves"></div>
+        <p class="rl-hint">The book on top of each pile is the one I recommend most. <span class="rl-star">★</span> means highly recommended; a book with its pages facing out is one I don’t recommend.</p>
+        <div class="rl-pick" aria-live="polite"></div>
+        <div class="rl-table"></div>
         <p class="rl-count" aria-live="polite"></p>`;
       const q = el.querySelector('input[type=search]'), only = el.querySelector('input[type=checkbox]');
-      const out = el.querySelector('.rl-shelves'), count = el.querySelector('.rl-count');
-      const draw = () => {
+      const table = el.querySelector('.rl-table'), pick = el.querySelector('.rl-pick'), count = el.querySelector('.rl-count');
+      let picked = null;
+      const matches = x => {
         const term = q.value.trim().toLowerCase();
-        let n = 0;
-        out.innerHTML = shelves.map(s => {
-          const books = s.books.filter(x => (!only.checked || x.rec === 'high') && (!term || (x.title + ' ' + x.author).toLowerCase().includes(term)));
-          n += books.length;
-          if (!books.length) return '';
-          return `<section class="rl-shelf"><h3>${esc(s.name)} <span>${books.length}</span></h3><ul>${books.map(x =>
-            `<li class="${x.rec ? 'rl-' + x.rec : ''}"><span class="rl-title">${esc(x.title)}</span>${x.author ? ` <span class="rl-author">${esc(x.author)}</span>` : ''}${x.rec === 'high' ? ' <span class="rl-tag">Highly recommended</span>' : x.rec === 'no' ? ' <span class="rl-tag">Not recommended</span>' : ''}</li>`).join('')}</ul></section>`;
-        }).join('') || '<p class="rl-empty">No books match.</p>';
-        const total = shelves.reduce((t, s) => t + s.books.length, 0);
-        count.textContent = `${n} of ${total} books`;
+        return (!only.checked || x.rec === 'high') && (!term || (x.title + ' ' + x.author).toLowerCase().includes(term));
       };
+      const book = x => {
+        const cream = rnd(x, 'c') < .16, hue = HUES[x.si % HUES.length] + (rnd(x, 'hue') - .5) * 40, w = 80 + Math.round(rnd(x, 'w') * 20);
+        const bg = cream ? `hsl(${hue} 30% 84%)` : `hsl(${hue} ${30 + rnd(x, 's') * 28}% ${20 + rnd(x, 'l') * 18}%)`;
+        const font = ['', 'rl-serif', 'rl-caps'][Math.floor(rnd(x, 'f') * 3)];
+        const label = esc(x.title + (x.author ? ' by ' + x.author : ''));
+        return `<button type="button" class="rl-book ${rnd(x, 'd') < .5 ? 'rl-band' : ''} ${x.rec ? 'rl-' + x.rec : ''}" data-key="${x.key}" title="${label}" aria-label="${label}" aria-pressed="false"
+          style="--w:${w}%;--x:${Math.round(rnd(x, 'x') * (100 - w))}%;--h:${25 + Math.round(rnd(x, 'h') * 9)}px;--r:${((rnd(x, 'r') - .5) * 1.4).toFixed(2)}deg;--bg:${bg};--fg:${cream ? '#2a2018' : '#f3ead9'}">
+          <span class="rl-t ${font}">${esc(x.title.split(':')[0])}</span><span class="rl-a">${esc(surname(x.author))}</span></button>`;
+      };
+      table.innerHTML = b.shelves.map((s, si) => {
+        const mine = books.filter(x => x.si === si), piles = [];
+        for (let i = 0; i < mine.length; i += PILE) piles.push(mine.slice(i, i + PILE));
+        return piles.map((p, pi) => `<div class="rl-col"><div class="rl-pile">${p.map(book).join('')}</div>
+          <p class="rl-cap" data-shelf="${si}" data-part="${piles.length > 1 ? `${pi + 1} of ${piles.length}` : ''}">${esc(s.name)} <span></span></p></div>`).join('');
+      }).join('');
+      const drawPick = () => {
+        const x = books.find(y => y.key === picked);
+        pick.innerHTML = x
+          ? `<p><b>${esc(x.title)}</b>${x.author ? ` by ${esc(x.author)}` : ''}<br><small>${esc(x.shelf)}${x.rec === 'high' ? ' · <span class="rl-star">★</span> Highly recommended' : x.rec === 'no' ? ' · Not recommended' : ''}</small></p><button type="button" class="rl-put" aria-label="Put the book back">×</button>`
+          : '<p><small>Click a book to see its full title.</small></p>';
+        table.querySelectorAll('.rl-book').forEach(n => { n.classList.toggle('rl-on', n.dataset.key === picked); n.setAttribute('aria-pressed', n.dataset.key === picked); });
+      };
+      // Books that don't match are dimmed rather than removed, so the piles keep their shape.
+      const draw = () => {
+        const shown = new Set(books.filter(matches).map(x => x.key));
+        table.querySelectorAll('.rl-book').forEach(n => n.classList.toggle('rl-off', !shown.has(n.dataset.key)));
+        table.querySelectorAll('.rl-cap').forEach(c => {
+          const n = books.filter(x => x.si === +c.dataset.shelf && shown.has(x.key)).length;
+          c.lastElementChild.textContent = c.dataset.part ? `(${c.dataset.part})` : `· ${n}`;
+        });
+        count.textContent = `${shown.size} of ${books.length} books`;
+        // A search that narrows to one book pulls it out.
+        if (q.value.trim() && shown.size === 1) { picked = [...shown][0]; drawPick(); }
+      };
+      table.addEventListener('click', e => {
+        const n = e.target.closest('.rl-book');
+        if (!n) return;
+        picked = picked === n.dataset.key ? null : n.dataset.key;
+        drawPick();
+      });
+      pick.addEventListener('click', e => { if (e.target.closest('.rl-put')) { picked = null; drawPick(); } });
       q.addEventListener('input', draw);
       only.addEventListener('change', draw);
       draw();
+      drawPick();
     },
   };
 

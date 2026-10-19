@@ -340,16 +340,14 @@ table.files { width: 100%; border-collapse: collapse; font-size: .8rem; }
 .rl-note { font-size: .8125rem; color: var(--muted); }
 .rl-search span { font-weight: 700; }
 .rl-search input { background: var(--field); color: var(--ink); border: 1px solid #7F9DB9; border-radius: 2px; padding: 3px 8px; }
-.rl-shelves { background: var(--field); border: 1px solid #7F9DB9; padding: 2px 10px 8px; max-height: 420px; overflow: auto; }
-.rl-shelf h3 { font: 700 .875rem/1.2 "Trebuchet MS", Tahoma, sans-serif; color: #1F4FA8; border-bottom: 1px solid var(--menuline); padding-bottom: 3px; }
-.rl-shelf li { font-size: .8125rem; padding: 2px 0; }
-.rl-tag { border-color: #D98A12; color: #8A5A10; background: #FFF4D6; }
-.rl-no .rl-tag { border-color: #C9441A; color: #9A2E10; background: #FDE3D9; }
+.rl-table { background: var(--field); border: 1px solid #7F9DB9; padding: 12px 10px 10px; max-height: 420px; overflow: auto; }
+.rl-cap { font: 700 .8125rem/1.2 "Trebuchet MS", Tahoma, sans-serif; color: #1F4FA8; }
+/* The pulled-out book shows in a yellow information bar. */
+.rl-pick { background: #FFFFE1; color: #1E1D1A; border: 1px solid #ACA899; font-size: .8125rem; }
 @media (prefers-color-scheme: dark) {
-  .rl-shelf h3 { color: var(--panehead-ink); }
-  .rl-search input, .rl-shelves { border-color: #4A5A7A; }
-  .rl-tag { background: #4A3A12; color: #F7D58A; border-color: #8A6A20; }
-  .rl-no .rl-tag { background: #4A2218; color: #FFB8A0; border-color: #8A3A20; }
+  .rl-cap { color: var(--panehead-ink); }
+  .rl-search input, .rl-table { border-color: #4A5A7A; }
+  .rl-pick { background: #3A3520; color: #F2EBC8; border-color: #6A6040; }
 }
 
 /* Display properties: pick a style */

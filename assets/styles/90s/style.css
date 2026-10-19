@@ -262,11 +262,9 @@ table.files { width: 100%; border-collapse: collapse; font-size: .8125rem; }
 /* Reading list */
 #w-reading .wbody { background: var(--field); margin: 3px; box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--hi), inset 2px 2px var(--dk); }
 .rl-search input { background: var(--field); color: var(--ink); border: 0; padding: 4px 8px; box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--hi), inset 2px 2px var(--dk); }
-.rl-shelf h3 { font-family: "Pixelify Sans", sans-serif; font-weight: 600; padding-bottom: 2px; box-shadow: 0 1px var(--lo), 0 2px var(--hi); }
-.rl-shelf li { font-size: .875rem; }
-.rl-tag { border-radius: 0; font-family: "Pixelify Sans", sans-serif; }
-.rl-high .rl-tag { background: var(--green); color: #fff; border-color: var(--green); }
-.rl-no .rl-tag { color: var(--red); }
+.rl-pick { background: var(--face); box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--hi), inset 2px 2px var(--dk); }
+.rl-cap { font-family: "Pixelify Sans", sans-serif; font-weight: 600; }
+.rl-book, .rl-book.rl-on { border-radius: 0; }
 
 /* Display properties: pick a style */
 .styles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 12px; }
