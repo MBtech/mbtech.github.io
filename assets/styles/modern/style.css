@@ -321,6 +321,8 @@ mark { background: color-mix(in srgb, var(--req) 35%, transparent); color: inher
   #menubar .mb.search span { display: none; }
   /* relative + z-index keeps the home screen above the fixed wallpaper */
   #desk { position: relative; z-index: 1; padding: 50px 16px 130px; min-height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-content: start; }
+  /* An open app covers the menu bar and dock; the desk's stacking context would otherwise keep it under them. */
+  body.app-open #desk { z-index: 9800; }
   #widgets { display: contents; }
   .w-clock { display: block !important; order: 1; }
   .w-cite { order: 2; }
@@ -350,8 +352,11 @@ mark { background: color-mix(in srgb, var(--req) 35%, transparent); color: inher
   .wbody { padding: 6px 18px 28px; }
   .services, .ways, .pj-tools { grid-template-columns: 1fr; }
   .who { flex-direction: column; gap: 14px; }
-  .trow, .axis { grid-template-columns: 112px 1fr; gap: 8px; }
-  .trow .lab { font-size: 12.5px; }
+  /* Each label sits above its bar, so it gets the full width instead of being cut short. */
+  .trow, .axis { grid-template-columns: 1fr; gap: 2px; }
+  .trow { padding: 5px 6px; }
+  .axis > :first-child { display: none; }
+  .trow .lab { font-size: 13px; }
   input, select { font-size: 16px !important; }
   .term input { font-size: 16px; }
   .palbox { top: 10px; }

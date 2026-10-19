@@ -341,7 +341,7 @@ const timeline = (() => {
       }).join('');
       html += `<div class="trow${on ? '' : ' off'}${sel === idx ? ' sel' : ''}" data-i="${idx}" tabindex="0" role="button" aria-pressed="${sel === idx}"><span class="lab">${label}</span><div class="track">${bars}<span class="cur" style="left:calc(${pct(year + .5)} - 1px)"></span></div></div>`;
     }
-    let ticks = ''; for (let y = Y0; y <= Y1; y += mobile() ? 6 : 3) ticks += `<span style="left:${pct(y + .5)}">${y}</span>`;
+    let ticks = ''; for (let y = Y0; y <= Y1; y += 3) ticks += `<span style="left:${pct(y + .5)}">${y}</span>`;
     html += `<div class="axis"><span></span><div class="ticks">${ticks}</div></div>`;
     tl.innerHTML = html;
     const now = ROLES.filter(r => r[1] && activeIn(r[1], year)).map(r => r[0]);

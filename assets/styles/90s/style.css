@@ -296,12 +296,13 @@ fieldset.grp legend { position: absolute; top: -8px; left: 8px; padding: 0 4px; 
 /* Phones: no dragging, windows become stacked cards and the desk scrolls */
 @media (max-width: 699px) {
   body { overflow: auto; }
-  #desk { position: static; padding: 10px 10px 60px; }
+  #desk { position: static; padding: 10px 10px 60px; overflow: visible; }
   .icons { position: static; display: grid; grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); grid-template-rows: none; gap: 4px; margin-bottom: 8px; }
   .icon { width: auto; }
   .win { position: relative !important; left: auto !important; top: auto !important; width: auto !important; height: auto !important; max-height: none !important; min-width: 0; margin: 0 0 12px; }
   .win.min .wbody, .win.min .status { display: none; }
-  .tbar { cursor: default; }
+  /* The title bar stays on screen while you scroll through a window, so its buttons are always in reach. */
+  .tbar { cursor: default; position: sticky; top: 0; z-index: 5; }
   .tbar .tb.maxb { display: none; }
   .trow, .axis { grid-template-columns: 1fr; gap: 2px; }
   .axis > :first-child { display: none; }
@@ -309,7 +310,13 @@ fieldset.grp legend { position: absolute; top: -8px; left: 8px; padding: 0 4px; 
   .tasks .btn { min-width: 90px; }
   .tools input[type=search] { width: 100%; }
   .status > * { white-space: normal; }
+  /* This line changes as the timeline replays; wrapping would move every window below it. */
+  #then { white-space: nowrap; }
   .files .venue { display: none; }
+  /* The page already scrolls; a second scroll box inside it is hard to use with a thumb. */
+  .list { max-height: none; }
+  .who { flex-direction: column; gap: 10px; }
+  .who .ava { width: 80px; height: 80px; }
   .hint { display: none; }
   #w-term .wbody { height: 300px; }
   .term input { font-size: 16px; }
