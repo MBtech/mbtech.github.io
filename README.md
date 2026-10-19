@@ -21,6 +21,8 @@ projects, papers, citation counts and the reading list. All three styles read fr
 - Change a role: edit `roles`. Dates are decimal years (2021.5 is about July 2021);
   `null` as the end date means it is still going.
 - Citations: update `scholar` and each paper's `cites` from Google Scholar.
+- Currently reading: edit `books.reading`. It shows as a widget on the modern desktop; move a book
+  to a shelf when you finish it.
 
 ## Links that open a window
 

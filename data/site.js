@@ -108,7 +108,12 @@ window.SITE = {
   ],
 
   // From the old reading page. rec: 'high' = highly recommended, 'no' = not recommended.
+  // reading: books I'm reading now, shown in the "Currently reading" widget. Move them to a shelf when done.
   books: {
+    reading: [
+      { title: 'Yesteryear', author: 'Caro Claire Burke' },
+      { title: 'The Dark Forest', author: 'Cixin Liu' },
+    ],
     note: 'Books I have read, roughly in order of how much I recommend them. A high recommendation doesn’t mean I agree with everything in the book, only that the perspective is worth hearing. The list is missing a few dozen books.',
     shelves: [
       { name: 'Finance and economics', books: [

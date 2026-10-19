@@ -71,6 +71,10 @@ const ICONS = {
   const sc = SITE.scholar;
   $('wCiteN').textContent = sc.citations; $('wH').textContent = sc.hIndex; $('wP').textContent = SITE.papers.length;
   $('wCite').setAttribute('aria-label', `${sc.citations} citations on Google Scholar. Open my papers.`);
+  const cur = SITE.books.reading || [];
+  $('wRead').hidden = !cur.length;
+  $('wReadList').innerHTML = cur.map(b => `<span class="bk"><i></i><span><b>${esc(b.title)}</b>${esc(b.author)}</span></span>`).join('');
+  $('wRead').setAttribute('aria-label', `Currently reading ${cur.map(b => `${b.title} by ${b.author}`).join(' and ')}. Open my reading list.`);
   $('scholarLink').href = L.scholar;
   $('helloText').textContent = `Hello, I'm ${P.short}.`;
 })();
