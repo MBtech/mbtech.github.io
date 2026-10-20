@@ -233,10 +233,8 @@ table.files { width: 100%; border-collapse: collapse; font-size: .8125rem; }
   box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--hi), inset 2px 2px var(--dk); }
 #boot .prog i { width: 12px; background: var(--title); }
 #boot .msg { margin: 0 12px 10px; font: .8125rem/1.3 "Pixelify Sans", sans-serif; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; }
-#saver { position: fixed; inset: 0; z-index: 9800; background: #000; cursor: none; }
-#saver[hidden] { display: none; }
-#saver canvas { width: 100%; height: 100%; display: block; }
-#saver p { position: absolute; left: 0; right: 0; bottom: 24px; margin: 0; text-align: center; color: #5E6A64; font: .8125rem/1 "IBM Plex Mono", monospace; }
+/* The screensaver itself comes from common.js; this keeps its hint in the 90s typeface. */
+.ss-hint { color: #5E6A64; font: .8125rem/1 "IBM Plex Mono", monospace; }
 
 /* What I do */
 .svc { margin: 0 0 14px; padding: 0; list-style: none; display: grid; gap: 6px; }
@@ -340,3 +338,21 @@ fieldset.grp legend { position: absolute; top: -8px; left: 8px; padding: 0 4px; 
 .pj-tools a { font-weight: 600; }
 .pj-tools span { display: block; color: var(--muted); font-size: .8125rem; line-height: 1.35; }
 @media (max-width: 699px) { .pj-tools { grid-template-columns: 1fr; } }
+
+/* Recycle Bin (shared renderer, .bin-* classes): a sunken white file list */
+.bin-intro { color: var(--muted); font-size: .875rem; }
+.bin-list, .bin-empty { background: var(--field); box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--hi), inset 2px 2px var(--dk); padding: 2px; }
+.bin-item { border-bottom: 1px dotted var(--lo); padding: 8px 10px; }
+.bin-ico { width: 32px; height: 32px; image-rendering: pixelated; }
+.bin-name { font: 600 1rem/1.25 "Pixelify Sans", sans-serif; }
+.bin-meta { font: .75rem "IBM Plex Mono", monospace; color: var(--muted); opacity: 1; }
+.bin-why { font-size: .875rem; }
+.bin .btn { font-size: .8125rem; padding: 3px 12px; }
+/* The window's status bar already shows the count. */
+.bin-foot { justify-content: flex-end; }
+.bin-foot span { display: none; }
+.bin-empty b { font: 600 1.0625rem/1.3 "Pixelify Sans", sans-serif; }
+.bin-empty p { font-size: .875rem; }
+
+/* Display Properties: screen saver */
+.saverrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: .8125rem; }

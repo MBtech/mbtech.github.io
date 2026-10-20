@@ -267,6 +267,19 @@ mark { background: color-mix(in srgb, var(--req) 35%, transparent); color: inher
 .pj-tools a { font-weight: 600; }
 .pj-tools span { display: block; color: var(--muted); font-size: 13px; line-height: 1.4; }
 
+/* Recycle Bin (markup from RecycleBin in common.js) */
+.bin-intro { color: var(--muted); }
+.bin-item { border-bottom-color: var(--line); padding: 12px 4px; }
+.bin-name { font-weight: 600; }
+.bin-meta { color: var(--muted); opacity: 1; font-size: 12.5px; }
+.bin-why { color: var(--muted); font-size: 14px; }
+.bin .btn { font-size: 13px; padding: 6px 12px; }
+.bin-foot { padding-top: 12px; border-top: 1px solid var(--line); }
+.bin-foot span { color: var(--muted); opacity: 1; font-size: 13px; }
+.bin-empty b { font-size: 17px; font-weight: 650; }
+.bin-empty p { color: var(--muted); }
+.bin-empty .bin-undo { background: var(--accent); color: var(--accent-ink); }
+
 /* Terminal: always dark, the one place with a monospace face */
 .win.termwin { --glass: rgba(12,20,18,.9); --edge: rgba(255,255,255,.08); color: #DDE7E2; }
 .win.termwin .tbar h2 { color: #DDE7E2; }

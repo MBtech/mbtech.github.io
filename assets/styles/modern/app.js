@@ -47,6 +47,11 @@ const ICONS = {
   medium: () => tile('md' + (++iconSeq), '#2A2A2A', '#111', '<circle cx="21" cy="30" r="8" fill="#fff"/><ellipse cx="36" cy="30" rx="4" ry="8" fill="#fff"/><ellipse cx="45" cy="30" rx="1.6" ry="7" fill="#fff"/>'),
   style: () => tile('st' + (++iconSeq), '#8E7CF0', '#4F3FB8', '<rect x="12" y="14" width="16" height="14" rx="3" fill="#fff"/><rect x="32" y="14" width="16" height="14" rx="3" fill="#C9C2FF"/><rect x="12" y="32" width="16" height="14" rx="3" fill="#C9C2FF"/><rect x="32" y="32" width="16" height="14" rx="7" fill="#fff"/>'),
   books: () => tile('bk' + (++iconSeq), '#E2634F', '#A63A2B', '<rect x="15" y="16" width="8" height="28" rx="1.5" fill="#fff"/><rect x="25" y="19" width="8" height="25" rx="1.5" fill="#FFD27A"/><rect x="36" y="15" width="8" height="30" rx="1.5" fill="#fff" transform="rotate(10 40 30)"/>'),
+  // Paper sticking out while it has things in it; the lid goes back on once it's emptied.
+  bin: () => tile('bn' + (++iconSeq), '#A7B4AF', '#5B6B65', (RecycleBin.count
+    ? '<path d="M20 24l3-8 6 4 5-7 4 6 4-1-1 6z" fill="#FFD27A"/><rect x="24" y="13" width="10" height="12" rx="1" fill="#fff" transform="rotate(-14 29 19)"/>'
+    : '<rect x="16" y="17" width="28" height="4" rx="2" fill="#fff"/><rect x="26" y="13" width="8" height="5" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>') +
+    '<path d="M18 23h24l-2.2 21.5a3 3 0 0 1-3 2.5H23.2a3 3 0 0 1-3-2.5z" fill="#fff"/><path d="M25 28v14M30 28v14M35 28v14" stroke="#5B6B65" stroke-width="2" stroke-linecap="round" opacity=".55"/>'),
 };
 
 /* ---------- content ---------- */
@@ -79,10 +84,18 @@ const ICONS = {
   $('helloText').textContent = `Hello, I'm ${P.short}.`;
 })();
 
-/* ---------- reading list, projects ---------- */
+/* ---------- reading list, projects, recycle bin ---------- */
 ReadingList.render($('rl'));
 Projects.render($('pj'));
 function readingSearch(q) { const i = $('rl').querySelector('input[type=search]'); i.value = q; i.dispatchEvent(new Event('input')); }
+RecycleBin.render($('bin'), {
+  btn: 'btn',
+  open(app, q) {
+    openWin($(WIN_ID(app)), { focus: true });
+    if (app === 'papers') { papers.all(true); papers.grep(q); } else if (app === 'reading') readingSearch(q);
+  },
+  change() { document.querySelectorAll('[data-open="w-bin"] .tile, #w-bin .tico').forEach(t => { t.innerHTML = ICONS.bin(); }); },
+});
 
 /* ---------- window manager ---------- */
 const WINDOWS = [...document.querySelectorAll('.win')];
@@ -217,6 +230,7 @@ function layout() {
   put('w-papers', L0 + 140, 70, Math.min(720, avail - 140));
   put('w-reading', L0 + 170, 40, Math.min(640, avail - 170));
   put('w-links', L0 + 200, 110, 460);
+  put('w-bin', L0 + 230, 80, Math.min(600, avail - 230));
   put('w-terminal', right - Math.min(640, avail), H - dockH - 380, 640);
   $('w-terminal').style.height = Math.min(360, H - dockH - 40) + 'px';
   return side;
@@ -232,15 +246,19 @@ const APPS = [
   { id: 'w-reading', label: 'Reading list', icon: 'books' },
   { id: 'w-links', label: 'Links', icon: 'links' },
   { id: 'w-terminal', label: 'Terminal', icon: 'term' },
+  { id: 'w-bin', label: 'Recycle Bin', icon: 'bin' },
 ];
 function dockClick(id) {
   const w = $(id);
   if (mobile() || w.hidden) { openWin(w, { focus: true }); return; }
   if (active === w) minWin(w); else focusWin(w);
 }
+const dockBtn = a => `<button class="dk" data-open="${a.id}"${a.fav ? ' data-fav' : ''}><span class="tile">${ICONS[a.icon]()}</span><span class="tip" aria-hidden="true">${a.label}</span><span class="sr">${a.label}</span><span class="sr state"></span></button>`;
+// The bin sits at the far end of the dock, after search.
 $('dock').innerHTML =
-  APPS.map(a => `${a.id === 'w-terminal' ? '<span class="dsep" aria-hidden="true"></span>' : ''}<button class="dk" data-open="${a.id}"${a.fav ? ' data-fav' : ''}><span class="tile">${ICONS[a.icon]()}</span><span class="tip" aria-hidden="true">${a.label}</span><span class="sr">${a.label}</span><span class="sr state"></span></button>`).join('') +
-  `<button class="dk" id="dockSearch" data-fav><span class="tile" style="color:var(--ink)">${ICONS.search()}</span><span class="tip" aria-hidden="true">Search</span><span class="sr">Search everything</span></button>`;
+  APPS.filter(a => a.id !== 'w-bin').map(a => `${a.id === 'w-terminal' ? '<span class="dsep" aria-hidden="true"></span>' : ''}${dockBtn(a)}`).join('') +
+  `<button class="dk" id="dockSearch" data-fav><span class="tile" style="color:var(--ink)">${ICONS.search()}</span><span class="tip" aria-hidden="true">Search</span><span class="sr">Search everything</span></button>` +
+  `<span class="dsep" aria-hidden="true"></span>${dockBtn(APPS.find(a => a.id === 'w-bin'))}`;
 // Each dock button reads its name, then "(open)" while the app is running.
 document.querySelectorAll('#dock .dk[data-open]').forEach(b => b.addEventListener('click', () => dockClick(b.dataset.open)));
 $('dockSearch').addEventListener('click', () => palette.open());
@@ -287,7 +305,7 @@ const menus = (() => {
 })();
 function markView() {
   const t = store.get('theme') || 'auto', w = store.get('wall') || 'aurora';
-  document.querySelectorAll('#m-view [data-act]').forEach(b => {
+  document.querySelectorAll('#m-view [data-act*=":"]').forEach(b => {
     const [k, v] = b.dataset.act.split(':'), on = (k === 'theme' ? t : w) === v;
     b.setAttribute('aria-checked', on); b.querySelector('.chk').textContent = on ? '•' : '';
   });
@@ -445,6 +463,7 @@ function act(a) {
   else if (a === 'reset') resetDesktop();
   else if (a === 'term') { openWin($('w-terminal'), { focus: false }); $('tin').focus(); }
   else if (k === 'style') switchStyle(v);
+  else if (a === 'saver') Screensaver.start();
 }
 
 /* ---------- search everything (Ctrl+K / Cmd+K) ---------- */
@@ -464,6 +483,7 @@ const palette = (() => {
     { label: 'Switch to the 2000s look', hint: 'Style', kw: 'style look retro classic old blue taskbar 2000s', icon: () => ICONS.search(), run: () => switchStyle('2000s') },
     { label: 'Switch to the 90s look', hint: 'Style', kw: 'style look retro classic old grey 90s', icon: () => ICONS.search(), run: () => switchStyle('90s') },
     { label: 'Open the terminal', hint: 'For the curious', kw: 'shell command console', icon: () => ICONS.term(), run: () => act('term') },
+    { label: 'Start the screensaver', hint: 'Any key brings you back', kw: 'screensaver screen saver clock idle', icon: () => ICONS.search(), run: () => act('saver') },
     { label: 'Reset desktop', hint: 'Put every window back', kw: 'reset layout', icon: () => ICONS.search(), run: resetDesktop },
   ];
   function build(q) {
@@ -512,7 +532,7 @@ const palette = (() => {
 const term = (() => {
   const out = $('tout'), input = $('tin'), form = $('tform');
   const hist = []; let hi = 0;
-  const NAMES = { about: 'w-about', me: 'w-about', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-terminal', term: 'w-terminal' };
+  const NAMES = { about: 'w-about', me: 'w-about', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-terminal', term: 'w-terminal', bin: 'w-bin', trash: 'w-bin' };
   const print = (html, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); while (out.children.length > 200) out.firstChild.remove(); out.scrollTop = out.scrollHeight; };
   const show = id => { openWin($(id), { focus: false }); if (!mobile() && id !== 'w-terminal') { $('w-terminal').style.zIndex = ++topZ; input.focus({ preventScroll: true }); } };
   let repos = null;
@@ -527,7 +547,7 @@ const term = (() => {
     help: () => print(
 `<span class="a">commands</span>
   ls                     list windows
-  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links
+  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links, bin
   whoami                 who I am
   papers [--grep x] [--sort cites] [--all]
   timeline [year]        what I was doing that year, or replay it
@@ -535,6 +555,7 @@ const term = (() => {
   github                 my recently pushed repos (live)
   theme light|dark|auto
   style modern|2000s|90s  switch the whole look
+  screensaver            start the screensaver
   reset, clear, history, date, exit
 <span class="d">tab completes, up and down arrows walk history</span>`),
     ls: () => print(APPS.map(a => `<span class="c">${Object.keys(NAMES).find(k => NAMES[k] === a.id).padEnd(10)}</span>${$(a.id).hidden ? (running.has(a.id) ? '<span class="a">minimised</span>' : '<span class="d">closed</span>') : '<span class="g">open</span>'}  <span class="d">${a.label}</span>`).join('\n')),
@@ -581,6 +602,8 @@ ${SITE.now.map(x => `<span class="a">${esc(x.role)}</span>${x.since ? ` <span cl
     history: () => print(hist.map((h, i) => `${String(i + 1).padStart(3)}  ${esc(h)}`).join('\n') || '<span class="d">empty</span>'),
     date: () => print(new Date().toString()),
     sudo: () => print('Nice try. You could <span class="c">hire --team</span> instead.'),
+    rm: () => { show('w-bin'); print('Nothing here is ever really deleted. It all ends up in the <span class="c">bin</span>.'); },
+    screensaver: () => { print('<span class="d">starting the screensaver. any key brings you back</span>'); setTimeout(() => act('saver'), 300); },
     exit: () => { print('<span class="d">bye</span>'); setTimeout(() => closeWin($('w-terminal')), 300); },
   };
   const CMDS = Object.keys(C);
@@ -630,6 +653,7 @@ addEventListener('keydown', e => {
 (() => {
   setWall(store.get('wall') || 'aurora'); themeIcon(); renderGo();
   Styles.remember();
+  Screensaver.init({ scene: 'glow', ready: () => !$('hello') && !mobile() });
   // ?open=papers,reading (or windows carried over from another style) wins over the saved layout.
   const asked = Styles.requested();
   let open = null; try { open = JSON.parse(store.get('open')); } catch {}

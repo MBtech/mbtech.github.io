@@ -39,6 +39,12 @@ const ICO = {
   monitor: '<svg viewBox="0 0 48 48"><rect x="4" y="6" width="40" height="28" rx="3" fill="#F2F2EC" stroke="#6F86AE"/><rect x="8" y="10" width="32" height="20" fill="url(#iGlobe)"/><path d="M8 24c8-6 16-6 32 0v6H8z" fill="#4FA733"/><rect x="18" y="34" width="12" height="5" fill="#C9C5B2"/><rect x="12" y="39" width="24" height="3" rx="1.5" fill="#8F8B76"/></svg>',
   person: '<svg viewBox="0 0 48 48"><path d="M8 43c0-10 7-16 16-16s16 6 16 16z" fill="url(#iGlobe)" stroke="#164FA8"/><circle cx="24" cy="16" r="9" fill="url(#iBulb)" stroke="#A8700C"/><ellipse cx="21" cy="12" rx="4" ry="2.5" fill="#fff" opacity=".6"/></svg>',
   warn: '<svg viewBox="0 0 16 16"><path d="M8 1l7 13H1z" fill="#F2C14E" stroke="#8A5A10"/><rect x="7" y="5" width="2" height="5" fill="#1B1B1B"/><rect x="7" y="11" width="2" height="2" fill="#1B1B1B"/></svg>',
+  // A see-through bin: crumpled paper inside while it has things in it.
+  get bin() {
+    return '<svg viewBox="0 0 48 48"><path d="M10 12h28l-3 31a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2z" fill="url(#iBin)" stroke="#4F7DB3"/>' +
+      (RecycleBin.count ? '<circle cx="19" cy="17" r="5" fill="#FFFFFF" stroke="#9AA6B8"/><circle cx="28" cy="15" r="6" fill="#FFF3B0" stroke="#C9A43A"/><path d="M22 20l6 3-5 3z" fill="#FFFFFF" stroke="#9AA6B8"/>' : '') +
+      '<ellipse cx="24" cy="12" rx="14" ry="3.5" fill="#DCEBFA" fill-opacity=".6" stroke="#4F7DB3"/><path d="M17 20l1 22M24 20v22M31 20l-1 22" stroke="#4F7DB3" stroke-opacity=".45" stroke-width="1.5"/><path d="M14 16l2 24" stroke="#fff" stroke-opacity=".8" stroke-width="2"/></svg>';
+  },
 };
 const glyph = name => ICO[name] || '';
 document.querySelectorAll('[data-ico]').forEach(el => { el.innerHTML = ICO[el.dataset.ico]; });
@@ -179,6 +185,7 @@ function layout() {
   put('w-papers', L + 200, 70, 760);
   put('w-reading', L + 230, 90, 640);
   put('w-links', L + 260, 110, 380);
+  put('w-bin', L + 290, 80, 600);
   put('w-style', Math.max(L, L + (avail - 620) / 2), 60, 620);
   put('w-terminal', W - R - 620, H - 380, 620);
   $('w-terminal').style.height = Math.min(360, H - 40) + 'px';
@@ -194,6 +201,7 @@ const PROGRAMS = [
   { id: 'w-reading', label: 'Reading list', icon: 'book', note: 'Books I recommend' },
   { id: 'w-links', label: 'Links', icon: 'links', note: 'Email, GitHub, Scholar' },
   { id: 'w-terminal', label: 'Terminal', icon: 'term', note: 'For people who like typing' },
+  { id: 'w-bin', label: 'Recycle Bin', icon: 'bin', note: 'Things I’ve let go of', deskOnly: true },
 ];
 let iconOrder = store.get('icons') || 'type';
 function renderIcons() {
@@ -213,7 +221,7 @@ function renderIcons() {
 renderIcons();
 $('linklist').innerHTML = LINKS.map(l => `<li>${linkHtml(l)}</li>`).join('');
 // Menu: the main three in bold up top, extras under a line; links on the right.
-$('menuLeft').innerHTML = PROGRAMS.map((p, i) => (i === 3 ? '<li><hr></li>' : '') +
+$('menuLeft').innerHTML = PROGRAMS.filter(p => !p.deskOnly).map((p, i) => (i === 3 ? '<li><hr></li>' : '') +
   `<li><button role="menuitem" class="big" data-open="${p.id}">${glyph(p.icon)}<span><b>${p.label}</b>${i < 3 ? `<small>${p.note}</small>` : ''}</span></button></li>`).join('');
 $('menuRight').innerHTML = LINKS.map(l => l.open
     ? `<li><button role="menuitem" data-open="${l.open}">${ICO[l.ico]}${l.label}</button></li>`
@@ -360,6 +368,7 @@ function act(a) {
   else if (a === 'reset') resetDesktop();
   else if (a === 'restart') showSplash(true);
   else if (a === 'wall-next') setWall(WALLS[(WALLS.indexOf(store.get('wall') || 'hills') + 1) % WALLS.length]);
+  else if (a === 'saver') Screensaver.start();
 }
 
 /* ---------- right-click menu on the desk ---------- */
@@ -420,8 +429,8 @@ document.addEventListener('pointerdown', e => { if (!ctxMenu.hidden && !e.target
 const term = (() => {
   const out = $('tout'), input = $('tin'), form = $('tform');
   const hist = []; let hi = 0;
-  const NAMES = { about: 'w-about', me: 'w-about', what: 'w-work', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-terminal', style: 'w-style' };
-  const LISTED = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-terminal' };
+  const NAMES = { about: 'w-about', me: 'w-about', what: 'w-work', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-terminal', style: 'w-style', bin: 'w-bin', trash: 'w-bin', recycle: 'w-bin' };
+  const LISTED = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-terminal', bin: 'w-bin' };
   const URL = { email: 'mailto:' + SITE.links.email, team: SITE.links.leadershift };
   const GH_USER = SITE.links.github.replace(/\/+$/, '').split('/').pop();
   const print = (html, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); while (out.children.length > 200) out.firstChild.remove(); out.scrollTop = out.scrollHeight; };
@@ -443,7 +452,7 @@ const term = (() => {
     help: () => print(
 `<span class="a">commands</span>
   ls                     list windows
-  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links, terminal
+  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links, terminal, bin
   whoami                 who I am
   papers [--grep x] [--sort cites] [--all]
   timeline [year]        what I was doing that year, or replay it all
@@ -451,6 +460,7 @@ const term = (() => {
   github                 my recently pushed repos (live)
   style modern|2000s|90s switch to another look (opens the same windows)
   wallpaper [name]       hills, sky, plain
+  screensaver            start the screen saver
   reset                  put the desktop back the way it was
   clear, history, date, exit
 <span class="d">tab completes, up and down arrows walk history</span>`),
@@ -507,6 +517,8 @@ const term = (() => {
     date: () => print(new Date().toString()),
     ver: () => print('bilal desktop, 2000s edition'),
     sudo: () => print('Nice try. You could <span class="c">hire --team</span> instead.'),
+    del: () => { show('w-bin'); print('Nothing here is ever really deleted. It all ends up in the <span class="c">bin</span>.'); },
+    screensaver: () => { print('<span class="d">starting the screen saver. Any key brings you back.</span>'); setTimeout(() => act('saver'), 300); },
     exit: () => { print('<span class="d">bye</span>'); setTimeout(() => closeWin($('w-terminal')), 300); },
   };
   const CMDS = Object.keys(C);
@@ -564,6 +576,21 @@ addEventListener('keydown', e => {
   $('scholarNote').innerHTML = `<a href="${esc(L.scholar)}">Google Scholar</a>: ${SITE.scholar.citations} citations, h-index ${SITE.scholar.hIndex}`;
   ReadingList.render($('rl'));
   Projects.render($('pj'));
+  const binStatus = n => { $('binStatus').textContent = n ? `${n} items` : 'Empty'; };
+  RecycleBin.render($('bin'), {
+    btn: 'btn',
+    open(app, q) {
+      openWin($('w-' + app));
+      if (app === 'papers') { papers.all(true); papers.grep(q); }
+      else if (app === 'reading') { const i = $('rl').querySelector('input[type=search]'); i.value = q; i.dispatchEvent(new Event('input')); }
+    },
+    change(n) {
+      document.querySelectorAll('.icon[data-open="w-bin"] .glyph, #w-bin .ti').forEach(g => { g.innerHTML = ICO.bin; });
+      const t = taskBtn($('w-bin')); if (t) t.querySelector('svg').outerHTML = ICO.bin;
+      binStatus(n);
+    },
+  });
+  binStatus(RecycleBin.count);
 })();
 
 /* ---------- styles: switch between modern, 2000s and 90s ---------- */
@@ -580,6 +607,7 @@ function switchStyle(id) { if (id === Styles.current) { closeWin($('w-style')); 
   // Double-clicking a preview applies it straight away.
   form.querySelectorAll('.scard').forEach(c => c.addEventListener('dblclick', () => switchStyle(c.querySelector('input').value)));
   $('styleBtn').addEventListener('click', () => openWin($('w-style')));
+  $('saverPreview').addEventListener('click', () => act('saver'));
 })();
 
 /* ---------- start ---------- */
@@ -596,6 +624,7 @@ function switchStyle(id) { if (id === Styles.current) { closeWin($('w-style')); 
   if (!mobile()) layout();
   if (mobile() && !asked) scrollTo(0, 0); else if (!asked && !$('w-about').hidden) focusWin($('w-about'));
   Styles.remember();
+  Screensaver.init({ scene: 'bounce', ready: () => $('splash').hidden && !mobile() });
   addEventListener('resize', () => { if (!mobile()) layout(); });
 })();
 

@@ -72,6 +72,8 @@
   <button role="menuitemradio" data-act="wall:aurora"><span class="chk"></span>Daylight</button>
   <button role="menuitemradio" data-act="wall:dusk"><span class="chk"></span>Dusk</button>
   <button role="menuitemradio" data-act="wall:plain"><span class="chk"></span>Plain</button>
+  <hr>
+  <button role="menuitem" data-act="saver"><span class="chk"></span>Start screensaver</button>
 </div>
 <div class="menu" id="m-style" role="menu" aria-label="Style" hidden>
   <div class="head">Pick a look. Your windows come with you.</div>
@@ -202,6 +204,12 @@
         </form>
       </div>
     </div>
+  </section>
+
+  <!-- Recycle Bin -->
+  <section class="win glass" id="w-bin" data-title="Recycle Bin" data-icon="bin" aria-labelledby="t-bin" tabindex="-1" hidden>
+    <div class="tbar"><button class="back" aria-label="Back to home"></button><span class="tico"></span><h2 id="t-bin">Recycle Bin</h2></div>
+    <div class="wbody"><div id="bin"></div></div>
   </section>
 </main>
 

@@ -120,6 +120,13 @@
     <div class="wbody"><ul class="linklist" id="linkList"></ul></div>
   </section>
 
+  <!-- Recycle Bin -->
+  <section class="win" id="w-bin" data-app="bin" data-title="Recycle Bin" aria-labelledby="t-bin" hidden>
+    <div class="tbar"><h2 id="t-bin">Recycle Bin</h2></div>
+    <div class="wbody"><div id="bin"></div></div>
+    <div class="status"><span id="binStatus"></span></div>
+  </section>
+
   <!-- Display properties: style + wallpaper -->
   <section class="win" id="w-display" data-title="Display Properties" aria-labelledby="t-display" hidden>
     <div class="tbar"><h2 id="t-display">Display Properties</h2></div>
@@ -130,6 +137,9 @@
       </fieldset>
       <fieldset class="grp"><legend>Wallpaper</legend>
         <div class="walls" id="wallPick"></div>
+      </fieldset>
+      <fieldset class="grp"><legend>Screen saver</legend>
+        <div class="saverrow"><span class="muted">Starfield. Starts after a minute without using the mouse or keyboard.</span><button class="btn" id="saverPreview" type="button">Preview</button></div>
       </fieldset>
       <div class="dlg-btns"><button class="btn primary" id="dispOk" type="button">OK</button><button class="btn" id="dispCancel" type="button">Cancel</button></div>
     </div>
@@ -169,6 +179,7 @@
     <li><button role="menuitem" data-act="arrange-type"><span class="chk"></span>Arrange icons by type</button></li>
     <li><hr></li>
     <li><button role="menuitem" data-act="term"><span class="chk"></span>Open Terminal</button></li>
+    <li><button role="menuitem" data-act="saver"><span class="chk"></span>Start screen saver</button></li>
     <li><button role="menuitem" data-act="reset"><span class="chk"></span>Reset desktop</button></li>
     <li><button role="menuitem" data-act="display"><span class="chk"></span>Properties</button></li>
   </ul>
@@ -181,7 +192,6 @@
     <div class="msg"><span id="bootMsg">Loading your desktop</span><span>Click to skip</span></div>
   </div>
 </div>
-<div id="saver" hidden aria-hidden="true"><canvas id="saverCv"></canvas><p>Move the mouse or press a key.</p></div>
 
 <div id="menu" hidden role="menu" aria-label="Programs">
   <div class="side">bilal</div>

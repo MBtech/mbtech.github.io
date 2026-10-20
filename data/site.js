@@ -71,6 +71,21 @@ window.SITE = {
     ],
   },
 
+  // The Recycle Bin: things I have let go of, and why. Newest first.
+  // when: shown in the "Deleted" column. restore (optional): a link ({ label, url }) or a window to open
+  // ({ label, open: 'papers' | 'reading', search: 'words to search for' }).
+  bin: {
+    intro: 'Things I’ve let go of, and why. Each one taught me something.',
+    items: [
+      { name: 'My old website', type: 'Website', when: 'Oct 2026', why: 'A ready-made blog theme that looked like everyone else’s. This desktop replaced it.', restore: { label: 'See it on GitHub', url: 'https://github.com/MBtech/mbtech.github.io/tree/e8d4cc0' } },
+      { name: 'The “demo to dependable” simulator', type: 'Program', when: 'Oct 2026', why: 'An early version of this site had a pipeline you could tune with dials. Nobody could tell what the dials did, so it went.' },
+      { name: 'Pixel-art avatar', type: 'Picture', when: 'Oct 2026', why: 'Didn’t make the cut. The pop-art portrait in About me took its place.' },
+      { name: 'Senior Engineer', type: 'Job title', when: 'Unbabel', why: 'Traded for Senior Engineering Manager. My job became helping other people do their best work.' },
+      { name: 'Steganography', type: 'Research topic', when: '2014', why: 'My first two papers hid messages inside images. I moved to distributed systems for my master’s and never went back.', restore: { label: 'Show the papers', open: 'papers', search: 'steganography' } },
+      { name: 'Texas Ranger, The President Is Missing', type: 'Books', why: 'The only two books on my reading list that I don’t recommend.', restore: { label: 'Find them', open: 'reading', search: 'Patterson' } },
+    ],
+  },
+
   // lane: industry | research | education
   roles: [
     { id: 'soko', lane: 'industry', title: 'Technical Advisor', org: 'Soko', when: 'May 2026 – now', spans: [[2026.33, null]], detail: 'Advising a local guide app.' },

@@ -27,7 +27,7 @@ projects, papers, citation counts and the reading list. All three styles read fr
 ## Links that open a window
 
 `/?open=papers,reading` opens those windows directly. Window ids: `about`, `work`, `journey`, `projects`,
-`papers`, `reading`, `links`, `terminal`. The old `/reading` page redirects to the
+`papers`, `reading`, `links`, `terminal`, `bin`. The old `/reading` page redirects to the
 reading list.
 
 ## Running it locally

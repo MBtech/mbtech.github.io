@@ -26,7 +26,7 @@ const ROLES = SiteData.roleRows((lane, r) => r.current ? 'g' : LANE_COL[lane]);
 const PAPERS = SiteData.paperRows();
 const Y0 = 2008, Y1 = Math.floor(SiteData.NOW);
 // App ids shared by all styles, and the windows that show them here.
-const APP = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-term' };
+const APP = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-term', bin: 'w-bin' };
 
 /* ---------- pixel icons, drawn from 16x16 maps ---------- */
 const PAL = { '#': '#1E1D1A', w: '#FBF9F4', f: '#B9B4AA', k: '#0E1A14', g: '#5FD08A', a: '#F2B33D', r: '#E0505C', y: '#F2C94C', Y: '#C99A1E', b: '#3E6FB8', B: '#233B63', n: '#8A5A2B', N: '#5E3B1B', p: '#B07CE0', c: '#5EC2D8' };
@@ -52,6 +52,13 @@ const MAPS = {
   bulb: [
     '................', '.....######.....', '....#yyyyyy#....', '...#yywyyyyy#...', '...#ywyyyyyy#...', '...#yyyyyyyy#...', '...#yyy#yyyy#...', '....#yy#yyy#....',
     '.....#y#yy#.....', '.....#yyyy#.....', '.....######.....', '.....#ffff#.....', '.....######.....', '.....#ffff#.....', '......####......', '................'],
+  // A wire basket with its lid on when empty, paper poking out when full.
+  binEmpty: [
+    '................', '.....######.....', '....#ffffff#....', '..############..', '..#wfwfwfwfwf#..', '..#fwfwfwfwfw#..', '...#wfwfwfwf#...', '...#fwfwfwfw#...',
+    '...#wfwfwfwf#...', '...#fwfwfwfw#...', '...#wfwfwfwf#...', '....#fwfwfw#....', '....#wfwfwf#....', '....########....', '................', '................'],
+  binFull: [
+    '.....##.........', '....#ww#.##.....', '...#wwww#yy#....', '..############..', '..#wfwfwfwfwf#..', '..#fwfwfwfwfw#..', '...#wfwfwfwf#...', '...#fwfwfwfw#...',
+    '...#wfwfwfwf#...', '...#fwfwfwfw#...', '...#wfwfwfwf#...', '....#fwfwfw#....', '....#wfwfwf#....', '....########....', '................', '................'],
   person: [
     '................', '......####......', '.....#aaaa#.....', '....#ayaaaa#....', '....#aaaaaa#....', '....#aaaaaa#....', '.....#aaaa#.....', '......####......',
     '...##########...', '..#bbbbbbbbbb#..', '.#bbcbbbbbbbbb#.', '.#bbbbbbbbbbbb#.', '.#bbbbbbbbbbbb#.', '.##############.', '................', '................'],
@@ -60,6 +67,7 @@ const MAPS = {
     '.#wwwwwwwwwwww#.', '.##############.', '......#ff#......', '.....##ff##.....', '...##########...', '...#ffffffff#...', '...##########...', '................'],
 };
 function icon(name) {
+  if (name === 'bin') name = RecycleBin.count ? 'binFull' : 'binEmpty';
   const m = MAPS[name]; let r = '';
   m.forEach((row, y) => [...row].forEach((ch, x) => { if (ch !== '.') r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${PAL[ch]}"/>`; }));
   return `<svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;
@@ -100,6 +108,17 @@ function icon(name) {
 
   ReadingList.render($('readingBody'));
   Projects.render($('pj'));
+  const binStatus = n => { $('binStatus').textContent = `${n} object(s)`; };
+  RecycleBin.render($('bin'), {
+    btn: 'btn',
+    open(app, q) {
+      openWin($(APP[app]));
+      if (app === 'papers') { papers.all(true); papers.grep(q); }
+      else if (app === 'reading') { const i = $('readingBody').querySelector('input[type=search]'); i.value = q; i.dispatchEvent(new Event('input')); }
+    },
+    change(n) { document.querySelectorAll('.icon[data-open="w-bin"] .glyph').forEach(g => { g.innerHTML = icon('bin'); }); binStatus(n); },
+  });
+  binStatus(RecycleBin.count);
   $('pscholar').textContent = `${S.scholar.citations} citations, h-index ${S.scholar.hIndex}`;
   $('bootName').textContent = P.name;
 })();
@@ -241,6 +260,7 @@ function layout() {
   put('w-reading', Lx + 220, 70, 560);
   $('w-reading').style.height = Math.min(600, H - 90) + 'px';
   put('w-links', Lx + 260, 100, 380);
+  put('w-bin', Lx + 290, 80, 560);
   put('w-display', (W - 480) / 2, 70, 480);
   put('w-term', W - R - 620, H - 380, 620);
   $('w-term').style.height = Math.min(360, H - 40) + 'px';
@@ -263,6 +283,7 @@ const PROGRAMS = [
   { id: 'w-reading', label: 'Reading list', icon: 'book' },
   { id: 'w-links', label: 'Links', icon: 'link' },
   { id: 'w-term', label: 'Terminal', icon: 'term' },
+  { id: 'w-bin', label: 'Recycle Bin', icon: 'bin', deskOnly: true },
 ];
 const SHORTCUTS = [
   { href: MAIL, label: 'Email' },
@@ -288,7 +309,7 @@ function renderIcons() {
 }
 renderIcons();
 $('menuList').innerHTML =
-  PROGRAMS.map(p => `<li><button role="menuitem" data-open="${p.id}">${glyph(p)}${p.label}</button></li>`).join('') + '<li><hr></li>' +
+  PROGRAMS.filter(p => !p.deskOnly).map(p => `<li><button role="menuitem" data-open="${p.id}">${glyph(p)}${p.label}</button></li>`).join('') + '<li><hr></li>' +
   SHORTCUTS.map(s => `<li><a role="menuitem" href="${esc(s.href)}"${ext(s.href)}>${icon('link')}${s.label}</a></li>`).join('') + '<li><hr></li>' +
   `<li><button role="menuitem" data-act="display">${icon('display')}Change style…</button></li>` +
   Styles.list.map(s => `<li><button role="menuitemradio" aria-checked="${s.id === Styles.current}" data-style="${s.id}"><span style="width:20px;text-align:center">${s.id === Styles.current ? '•' : ''}</span>${s.label} look</button></li>`).join('') +
@@ -441,6 +462,7 @@ const display = (() => {
   function ok() { if (!switchStyle(pick)) closeWin(win); }
   $('dispOk').addEventListener('click', ok);
   $('dispCancel').addEventListener('click', () => { setWall(wallAtOpen); closeWin(win); });
+  $('saverPreview').addEventListener('click', () => act('saver'));
   win.addEventListener('winopen', () => { pick = Styles.current; wallAtOpen = currentWall(); sync(); });
   return { open() { openWin(win); const c = cards.querySelector('[aria-checked="true"]'); if (c && !mobile()) c.focus(); } };
 })();
@@ -462,6 +484,7 @@ function act(a) {
   else if (a === 'reset') resetDesktop();
   else if (a === 'display') display.open();
   else if (a === 'wall-next') setWall(WALLS[(WALLS.indexOf(currentWall()) + 1) % WALLS.length]);
+  else if (a === 'saver') Screensaver.start();
 }
 
 /* ---------- right-click menu on the desk ---------- */
@@ -525,8 +548,8 @@ document.addEventListener('pointerdown', e => { if (!ctx.hidden && !e.target.clo
 (() => {
   const out = $('tout'), input = $('tin'), form = $('tform');
   const hist = []; let hi = 0;
-  const NAMES = { about: 'w-about', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-term', display: 'w-display' };
-  const WINLIST = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-term' };
+  const NAMES = { about: 'w-about', work: 'w-work', hire: 'w-work', journey: 'w-journey', timeline: 'w-journey', projects: 'w-projects', tools: 'w-projects', papers: 'w-papers', reading: 'w-reading', books: 'w-reading', links: 'w-links', terminal: 'w-term', display: 'w-display', bin: 'w-bin', trash: 'w-bin' };
+  const WINLIST = { about: 'w-about', work: 'w-work', journey: 'w-journey', projects: 'w-projects', papers: 'w-papers', reading: 'w-reading', links: 'w-links', terminal: 'w-term', bin: 'w-bin' };
   const print = (html, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); while (out.children.length > 200) out.firstChild.remove(); out.scrollTop = out.scrollHeight; };
   // Open or raise a window; keep typing in the terminal.
   const show = id => {
@@ -548,7 +571,7 @@ document.addEventListener('pointerdown', e => { if (!ctx.hidden && !e.target.clo
     help: () => print(
 `<span class="a">commands</span>
   ls                     list windows
-  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links
+  open|close &lt;window&gt;    about, work, journey, projects, papers, reading, links, bin
   whoami                 who I am
   papers [--grep x] [--sort cites] [--all]
   timeline [year]        what I was doing that year, or replay it all
@@ -556,6 +579,7 @@ document.addEventListener('pointerdown', e => { if (!ctx.hidden && !e.target.clo
   style [${styleIds.join('|')}]  switch the whole site to another look
   github                 my recently pushed repos (live)
   wallpaper [name]       ${WALLS.join(', ')}
+  screensaver            start the screen saver
   reset                  put the desktop back the way it was
   clear, history, date, exit
 <span class="d">tab completes, up and down arrows walk history</span>`),
@@ -610,6 +634,8 @@ document.addEventListener('pointerdown', e => { if (!ctx.hidden && !e.target.clo
     date: () => print(new Date().toString()),
     uname: () => print('bilal-desktop (90s look)'),
     sudo: () => print('Nice try. You could <span class="c">hire --team</span> instead.'),
+    rm: () => { show('w-bin'); print('Nothing here is ever really deleted. It all ends up in the <span class="c">bin</span>.'); },
+    screensaver: () => { print('<span class="d">starting the screen saver. Any key brings you back.</span>'); setTimeout(() => act('saver'), 300); },
     exit: () => { print('<span class="d">bye</span>'); setTimeout(() => closeWin($('w-term')), 300); },
   };
   const CMDS = Object.keys(C);
@@ -686,39 +712,6 @@ let booted = false;
   step();
 })();
 
-/* ---------- screensaver: a starfield, after a minute idle ---------- */
-(() => {
-  if (reduce) return;
-  const saver = $('saver'), cv = $('saverCv'), c2 = cv.getContext('2d');
-  const IDLE = 60000;
-  let timer = null, running = false, stars = [], W = 0, H = 0, sx = 0, sy = 0;
-  const COLS = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#BFD7FF', '#FFE7A8'];
-  const spawn = () => ({ x: (Math.random() - .5) * 2, y: (Math.random() - .5) * 2, z: 1 + Math.random() * 3, c: COLS[Math.floor(Math.random() * COLS.length)] });
-  function start() {
-    if (running || mobile() || $('boot')) return;
-    running = true; saver.hidden = false;
-    const d = devicePixelRatio || 1; W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; c2.setTransform(d, 0, 0, d, 0, 0);
-    stars = Array.from({ length: 220 }, spawn);
-    (function frame() {
-      if (!running) return;
-      c2.fillStyle = 'rgba(0,0,0,.35)'; c2.fillRect(0, 0, W, H);
-      for (const s of stars) {
-        s.z -= .02;
-        if (s.z <= .05) Object.assign(s, spawn(), { z: 4 });
-        const k = 1 / s.z, x = W / 2 + s.x * W * .5 * k, y = H / 2 + s.y * H * .5 * k, size = Math.max(1, 3 * k);
-        if (x < 0 || x > W || y < 0 || y > H) { Object.assign(s, spawn(), { z: 4 }); continue; }
-        c2.fillStyle = s.c; c2.fillRect(Math.round(x), Math.round(y), Math.round(size), Math.round(size));
-      }
-      requestAnimationFrame(frame);
-    })();
-  }
-  function stop() { if (!running) return; running = false; saver.hidden = true; }
-  function poke() { stop(); clearTimeout(timer); timer = setTimeout(start, IDLE); }
-  ['keydown', 'pointerdown', 'wheel', 'touchstart'].forEach(ev => addEventListener(ev, poke, { passive: true }));
-  // Ignore tiny jitters: only a real mouse move wakes the screen.
-  addEventListener('pointermove', e => { if (!running) { poke(); sx = e.clientX; sy = e.clientY; return; } if (Math.hypot(e.clientX - sx, e.clientY - sy) > 6) poke(); }, { passive: true });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else poke(); });
-  window.__saver = { start, stop };
-  poke();
-})();
+/* ---------- screensaver: a starfield, after a minute idle (shared, in common.js) ---------- */
+Screensaver.init({ scene: 'stars', ready: () => !$('boot') && !mobile() });
 })();

@@ -76,6 +76,7 @@
     <linearGradient id="iBook" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9584A"/><stop offset="1" stop-color="#A82A1F"/></linearGradient>
     <linearGradient id="iBulb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3A6"/><stop offset="1" stop-color="#F2B623"/></linearGradient>
     <linearGradient id="iGo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE07A"/><stop offset="1" stop-color="#2F9A2C"/></linearGradient>
+    <linearGradient id="iBin" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B9D6F2"/><stop offset=".45" stop-color="#F4FAFF"/><stop offset="1" stop-color="#8DB4DE"/></linearGradient>
   </defs>
 </svg>
 
@@ -202,6 +203,13 @@
     </div>
   </section>
 
+  <!-- Recycle Bin -->
+  <section class="win" id="w-bin" data-title="Recycle Bin" data-icon="bin" aria-labelledby="t-bin" hidden>
+    <div class="tbar"><span class="ti" data-ico="bin"></span><h2 id="t-bin">Recycle Bin</h2></div>
+    <div class="wbody"><div id="bin"></div></div>
+    <div class="status"><span id="binStatus"></span></div>
+  </section>
+
   <!-- Display properties: switch between the three styles -->
   <section class="win" id="w-style" data-title="Change style" data-icon="monitor" aria-labelledby="t-style" hidden>
     <div class="tbar"><span class="ti" data-ico="monitor"></span><h2 id="t-style">Display Properties</h2></div>
@@ -213,6 +221,10 @@
           <label class="scard"><input type="radio" name="style" value="2000s"><span class="prev y2k" aria-hidden="true"><i class="hill"></i><i class="w1"></i><i class="bar"></i><i class="go"></i></span><b>2000s <span class="now">(current)</span></b><small>Blue title bars, green hills, a big menu button</small></label>
           <label class="scard"><input type="radio" name="style" value="90s"><span class="prev nineties" aria-hidden="true"><i class="w1"></i><i class="bar"></i><i class="go"></i></span><b>90s</b><small>Grey bevels, navy title bars, a teal desk</small></label>
         </fieldset>
+        <div class="saverrow">
+          <span><b>Screen saver</b><small>Starts after a minute without using the mouse or keyboard.</small></span>
+          <button class="btn" type="button" id="saverPreview">Preview</button>
+        </div>
         <div class="sbtns">
           <button class="btn" type="submit">OK</button>
           <button class="btn" type="button" id="styleCancel">Cancel</button>
@@ -238,6 +250,7 @@
     <li><button role="menuitemradio" data-wall="sky"><span class="chk"></span>Sky</button></li>
     <li><button role="menuitemradio" data-wall="plain"><span class="chk"></span>Plain blue</button></li>
     <li><hr></li>
+    <li><button role="menuitem" data-act="saver"><span class="chk"></span>Start screen saver</button></li>
     <li><button role="menuitem" data-act="reset"><span class="chk"></span>Reset desktop</button></li>
   </ul>
 </div>

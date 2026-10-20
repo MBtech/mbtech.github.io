@@ -407,3 +407,28 @@ table.files { width: 100%; border-collapse: collapse; font-size: .8rem; }
 .pj-tools a { font-weight: 700; }
 .pj-tools span { display: block; color: var(--muted); font-size: .75rem; line-height: 1.35; }
 @media (max-width: 699px) { .pj-tools { grid-template-columns: 1fr; } }
+
+/* Recycle Bin (shared renderer, .bin-* classes): a white file list, like a folder window */
+.bin-intro { font-size: .8125rem; color: var(--muted); }
+.bin-list { background: var(--field); border: 1px solid #7F9DB9; }
+.bin-item { border-bottom-color: color-mix(in srgb, var(--line) 50%, transparent); padding: 8px 10px; }
+.bin-item:hover { background: color-mix(in srgb, var(--sel) 10%, transparent); }
+.bin-ico { width: 28px; height: 28px; }
+.bin-name { font-size: .875rem; }
+.bin-meta { color: var(--muted); opacity: 1; font-size: .72rem; }
+.bin-why { font-size: .8125rem; }
+/* The window's status bar already shows the count. */
+.bin-foot { justify-content: flex-end; }
+.bin-foot span { display: none; }
+.bin-empty { background: var(--field); border: 1px solid #7F9DB9; }
+.bin-empty b { color: #1F4FA8; font-family: "Trebuchet MS", Tahoma, sans-serif; font-size: 1rem; }
+.bin-empty p { font-size: .8125rem; }
+@media (prefers-color-scheme: dark) {
+  .bin-list, .bin-empty { border-color: #4A5A7A; }
+  .bin-empty b { color: var(--panehead-ink); }
+}
+
+/* Display properties: screen saver row */
+.saverrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0 14px; margin-bottom: 12px; border-bottom: 1px solid var(--line); }
+.saverrow b { display: block; font-size: .875rem; }
+.saverrow small { color: var(--muted); font-size: .75rem; }
