@@ -126,8 +126,9 @@ window.SITE = {
   // reading: books I'm reading now, shown in the "Currently reading" widget. Move them to a shelf when done.
   books: {
     reading: [
-      { title: 'Yesteryear', author: 'Caro Claire Burke' },
       { title: 'The Dark Forest', author: 'Cixin Liu' },
+      { title: 'Will My Cat Eat My Eyeballs?', author: 'Caitlin Doughty' },
+      { title: 'Incidents Around the House', author: 'Josh Malerman' },
     ],
     note: 'Books I have read, roughly in order of how much I recommend them. A high recommendation doesn’t mean I agree with everything in the book, only that the perspective is worth hearing. The list is missing a few dozen books.',
     shelves: [
@@ -228,6 +229,7 @@ window.SITE = {
         { title: 'Never Let Me Go', author: 'Kazuo Ishiguro' },
         { title: 'Head On', author: 'John Scalzi' },
         { title: 'Trigger Warning', author: 'Neil Gaiman' },
+        { title: 'Yesteryear', author: 'Caro Claire Burke' },
         { title: 'Texas Ranger', author: 'James Patterson and Andrew Bourelle', rec: 'no' },
         { title: 'The President Is Missing', author: 'Bill Clinton and James Patterson', rec: 'no' },
       ] },
