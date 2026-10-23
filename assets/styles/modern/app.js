@@ -580,9 +580,9 @@ ${SITE.now.map(x => `<span class="a">${esc(x.role)}</span>${x.since ? ` <span cl
     },
     hire: a => {
       show('w-work');
-      if (a.includes('--solo')) print(`Just me. <a href="mailto:${esc(L.email)}">${esc(L.email)}</a>`);
-      else if (a.includes('--team')) print(`A wider team, through <a href="${esc(TEAM)}" target="_blank" rel="noopener">The Leadershift Studio</a>.`);
-      else print(`Two ways in:\n  <span class="g">--solo</span>  just me, <a href="mailto:${esc(L.email)}">${esc(L.email)}</a>\n  <span class="g">--team</span>  a wider team, <a href="${esc(TEAM)}" target="_blank" rel="noopener">The Leadershift Studio</a>`);
+      if (a.includes('--solo')) print(`Just me, for AI engineering work. <a href="mailto:${esc(L.email)}">${esc(L.email)}</a>`);
+      else if (a.includes('--team')) print(`A wider team, for a range of expertise including Growth, People Ops, Strategy and AI Law, through <a href="${esc(TEAM)}" target="_blank" rel="noopener">The Leadershift Studio</a>.`);
+      else print(`Two ways in:\n  <span class="g">--solo</span>  AI engineering work: just me, <a href="mailto:${esc(L.email)}">${esc(L.email)}</a>\n  <span class="g">--team</span>  Growth, People Ops, Strategy, AI Law: a wider team, <a href="${esc(TEAM)}" target="_blank" rel="noopener">The Leadershift Studio</a>`);
     },
     github: () => {
       print('<span class="d">asking github…</span>');

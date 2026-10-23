@@ -40,8 +40,8 @@ window.SITE = {
       { title: 'Leading AI teams', text: 'Hiring, code review, onboarding and growth plans, as a fractional or interim lead.' },
       { title: 'AI for research', text: 'Agents with memory for literature review and R&D, with people kept in the loop.' },
     ],
-    solo: { title: 'Just me', text: 'One senior person working with you directly.', cta: 'Email me' },
-    team: { title: 'A wider team', text: 'For a more complete engagement, through The Leadershift Studio.', cta: 'Go to The Leadershift Studio' },
+    solo: { title: 'Just me', text: 'For AI engineering work. One senior person working with you directly.', cta: 'Email me' },
+    team: { title: 'A wider team', text: 'For a range of expertise, including Growth, People Ops, Strategy and AI Law, through The Leadershift Studio.', cta: 'Go to The Leadershift Studio' },
   },
 
   // Things I build on the side. tools: smaller apps listed under a project.

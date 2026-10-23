@@ -610,9 +610,9 @@ document.addEventListener('pointerdown', e => { if (!ctx.hidden && !e.target.clo
     },
     hire: a => {
       show('w-work');
-      if (a.includes('--solo')) print(`Just me. <a href="${esc(MAIL)}">${esc(L.email)}</a>`);
-      else if (a.includes('--team')) print(`A wider team, through <a href="${esc(L.leadershift)}"${ext(L.leadershift)}>The Leadershift Studio</a>.`);
-      else print(`Two ways in:\n  <span class="g">--solo</span>  just me, <a href="${esc(MAIL)}">${esc(L.email)}</a>\n  <span class="g">--team</span>  a wider team, <a href="${esc(L.leadershift)}"${ext(L.leadershift)}>The Leadershift Studio</a>`);
+      if (a.includes('--solo')) print(`Just me, for AI engineering work. <a href="${esc(MAIL)}">${esc(L.email)}</a>`);
+      else if (a.includes('--team')) print(`A wider team, for a range of expertise including Growth, People Ops, Strategy and AI Law, through <a href="${esc(L.leadershift)}"${ext(L.leadershift)}>The Leadershift Studio</a>.`);
+      else print(`Two ways in:\n  <span class="g">--solo</span>  AI engineering work: just me, <a href="${esc(MAIL)}">${esc(L.email)}</a>\n  <span class="g">--team</span>  Growth, People Ops, Strategy, AI Law: a wider team, <a href="${esc(L.leadershift)}"${ext(L.leadershift)}>The Leadershift Studio</a>`);
     },
     style: a => {
       const id = (a[0] || '').toLowerCase();
